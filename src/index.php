@@ -14,7 +14,7 @@ $META = $DATA_DIR . "meta.json";
 
 // подготовка директорий перед работой с файлами
 // создаем директории если они отсутствуют
-function prepare_directories()
+function prepare_directories(): void
 {
   global $DATA_DIR, $FULL_DIR, $THUMB_DIR;
   if (!file_exists($DATA_DIR)) {
