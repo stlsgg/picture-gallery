@@ -6,4 +6,4 @@ node_modules
 *.webp
 *.jpeg
 # information about pictures
-meta.json
+*.json
