@@ -130,7 +130,7 @@ switch ($mime) {
 }
 
 // check orig existing
-if ($orig === false) {
+if (!$orig) {
   http_response_code(500);
   set_text();
   echo "failed to open image in gd\n";
