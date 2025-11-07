@@ -7,6 +7,10 @@ settings:
 importers:
 
   .:
+    dependencies:
+      spectre.css:
+        specifier: ^0.5.9
+        version: 0.5.9
     devDependencies:
       '@prettier/plugin-php':
         specifier: 0.24.0
