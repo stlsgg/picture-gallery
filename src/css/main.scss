@@ -13,3 +13,31 @@ header {
     }
   }
 }
+
+// main: gallery
+.gallery {
+  place-items: center;
+  padding: 25px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+
+  .card {
+    width: 300px;
+  }
+}
+
+.modal {
+  &-header {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &-title {
+    align-content: center;
+  }
+}
+
+.pagination {
+  justify-content: center;
+}
