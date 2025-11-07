@@ -16,10 +16,128 @@
     <script type="module" src="./js/main.js"></script>
   </head>
   <body>
-    <form action="index.php" method="post" enctype="multipart/form-data">
-      <input type="file" name="image" required />
-      <input type="text" name="desc" placeholder="описание (необязательно)" />
-      <input type="submit" value="отправить" />
-    </form>
+    <!-- header -->
+    <header class="navbar">
+      <section class="navbar-section">
+        <p>Галерея</p>
+      </section>
+
+      <section class="navbar-section">
+        <a href="#modal-upload-window">
+          <button class="btn btn-primary">
+            <i class="icon icon-upload"></i>
+            Загрузить изображение
+          </button>
+        </a>
+      </section>
+    </header>
+
+    <div class="modal" id="modal-upload-window">
+      <a href="#close" class="modal-overlay" aria-label="Close"></a>
+      <div class="modal-container">
+        <div class="modal-header">
+          <div class="modal-title h5">Загрузить изображение</div>
+          <a href="#close" class="btn btn-primary" aria-label="Close"
+            ><i class="icon icon-cross"></i>
+          </a>
+        </div>
+        <div class="modal-body">
+          <div class="content">
+            <!-- form to upload img -->
+            <form
+              action="index.php"
+              method="post"
+              enctype="multipart/form-data"
+            >
+              <div class="form-group">
+                <div class="drag-and-drop" id="drop-zone">
+                  <input type="file" name="image" id="file-upload" required />
+                  <label for="file-upload">Перетащите сюда картинку :3</label>
+                </div>
+                <button type="submit" class="btn btn-primary">Отправить</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- main content: gallery -->
+    <main class="gallery">
+      <a href="#modal-full-image-window">
+        <div class="card">
+          <div class="card-image">
+            <img
+              class="img-responsive"
+              src="./300.png"
+              alt="dummy 300px image"
+            />
+          </div>
+          <div class="card-body">
+            Empower every person and every organization on the planet to achieve
+            more.
+          </div>
+        </div>
+      </a>
+      <div class="card">
+        <div class="card-image">
+          <img class="img-responsive" src="./300.png" alt="dummy 300px image" />
+        </div>
+        <div class="card-body">
+          Empower every person and every organization on the planet to achieve
+          more.
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-image">
+          <img class="img-responsive" src="./300.png" alt="dummy 300px image" />
+        </div>
+        <div class="card-body">
+          Empower every person and every organization on the planet to achieve
+          more.
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-image">
+          <img class="img-responsive" src="./300.png" alt="dummy 300px image" />
+        </div>
+        <div class="card-body">
+          Empower every person and every organization on the planet to achieve
+          more.
+        </div>
+      </div>
+    </main>
+
+    <!-- pagination -->
+    <ul class="pagination">
+      <li class="page-item active">
+        <a href="#">1</a>
+      </li>
+      <li class="page-item">
+        <a href="#">2</a>
+      </li>
+      <li class="page-item">
+        <a href="#">3</a>
+      </li>
+    </ul>
+
+    <!-- modal window for full opened image -->
+    <div class="modal modal-lg" id="modal-full-image-window">
+      <a href="#close" class="modal-overlay" aria-label="Close"></a>
+      <div class="modal-container">
+        <div class="modal-header">
+          <a href="#close" class="btn btn-primary" aria-label="Close"
+            ><i class="icon icon-cross"></i>
+          </a>
+        </div>
+        <div class="modal-body">
+          <div class="content">
+            <img src="./1920x1080.png" alt="dummy big image" />
+
+            <p class="description">description</p>
+          </div>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
