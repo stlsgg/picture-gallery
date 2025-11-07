@@ -75,7 +75,7 @@ if (!file_exists("/data/meta.json")) {
 }
 $first_key = false;
 // если пустое - инициализируем $metadata сами внутри скрипта
-if (empty("/data/meta.json")) {
+if (filesize("/data/meta.json") === 0) {
   $metadata = [];
   $first_key = true;
 } else {
