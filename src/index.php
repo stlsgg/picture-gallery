@@ -92,6 +92,7 @@ if (filesize("./data/meta.json") === 0) {
   if (json_last_error() !== JSON_ERROR_NONE) {
     abort(400, "error while trying to parse meta.json");
     echo "detailed: " . json_last_error_msg() . "\n";
+    exit;
   }
 }
 
