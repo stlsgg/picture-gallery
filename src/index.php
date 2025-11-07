@@ -13,8 +13,8 @@ function set_text()
 }
 
 // пути, по которому сохраняем и полную картинку, и превьюшку
-$upload_dir_original = "/data/full/";
-$upload_dir_thumbnail = "/data/thumb/";
+$upload_dir_original = "./data/full/";
+$upload_dir_thumbnail = "./data/thumb/";
 
 // создаем директории если они отсутствуют
 if (!file_exists($upload_dir_original)) {
@@ -72,18 +72,18 @@ $description = $_POST["desc"] ?? "no description provided";
 // для простоты буду проверять по имени и просто выходить, если есть файл на
 // сервере
 // попытка открыть файл meta по заданному пути
-if (!file_exists("/data/meta.json")) {
+if (!file_exists("./data/meta.json")) {
   // создаем meta.json
-  touch("/data/meta.json");
+  touch("./data/meta.json");
 }
 $first_key = false;
 // если пустое - инициализируем $metadata сами внутри скрипта
-if (filesize("/data/meta.json") === 0) {
+if (filesize("./data/meta.json") === 0) {
   $metadata = [];
   $first_key = true;
 } else {
   // пробуем прочесть meta
-  $metadata = json_decode(file_get_contents("/data/meta.json"), true);
+  $metadata = json_decode(file_get_contents("./data/meta.json"), true);
   if (json_last_error() !== JSON_ERROR_NONE) {
     http_response_code(400);
     set_text();
@@ -131,7 +131,7 @@ $orig_height = imagesy($orig);
 
 // наложить watermark на оригинал
 // открыть watermark
-$tmp_watermark = imagecreatefrompng("/data/template/watermark.png");
+$tmp_watermark = imagecreatefrompng("./data/template/watermark.png");
 // размеры открытой  watermark
 $tmp_w = imagesx($tmp_watermark);
 $tmp_h = imagesy($tmp_watermark);
@@ -205,4 +205,4 @@ $metadata[$key] = [
   "thumb" => $path_to_thumb
 ];
 
-file_put_contents("/data/meta.json", json_encode($metadata), LOCK_EX);
+file_put_contents("./data/meta.json", json_encode($metadata), LOCK_EX);
