@@ -41,6 +41,9 @@ $image_info = $_FILES["image"];
 // проверка на ошибку в $_FILES
 $error = $image_info["error"];
 if ($error) {
+  http_response_code(400);
+  set_text();
+  echo "upload error with status code $error\n";
   exit;
 }
 
