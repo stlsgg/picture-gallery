@@ -28,6 +28,11 @@ header {
 }
 
 .modal {
+  &-container {
+    border: thin solid #dadee4;
+    max-height: 100vh !important;
+  }
+
   &-header {
     display: flex;
 
