@@ -17,6 +17,9 @@ $upload_dir_original = "./data/full/";
 $upload_dir_thumbnail = "./data/thumb/";
 
 // создаем директории если они отсутствуют
+if (!file_exists("./data")) {
+  mkdir("./data", 0755, true);
+}
 if (!file_exists($upload_dir_original)) {
   mkdir($upload_dir_original, 0755, recursive: true);
 }
