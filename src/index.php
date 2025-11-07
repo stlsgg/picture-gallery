@@ -136,8 +136,8 @@ $tmp_watermark = imagecreatefrompng("./data/template/watermark.png");
 $tmp_w = imagesx($tmp_watermark);
 $tmp_h = imagesy($tmp_watermark);
 
-// масштабирую водяной знак до 5% от оригинального изображения
-$wm_w = intval($orig_width * 0.05);
+// масштабирую водяной знак до 10% от оригинального изображения
+$wm_w = intval($orig_width * 0.1);
 $scale = $wm_w / $tmp_w;
 $wm_h = intval($tmp_h * $scale);
 
