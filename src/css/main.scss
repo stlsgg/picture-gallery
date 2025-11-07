@@ -41,3 +41,31 @@ header {
 .pagination {
   justify-content: center;
 }
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.drag-and-drop {
+  border: 2px #dadee4 dashed;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+
+  input {
+    display: none;
+  }
+
+  label {
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  &.active {
+    border-color: #aaaaaa;
+    background-color: #f0f0f0;
+  }
+}
