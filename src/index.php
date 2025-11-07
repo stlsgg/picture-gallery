@@ -169,16 +169,25 @@ imagecopyresampled($thumbnail, $orig, 0, 0, $x, $y, 300, 300, $side, $side);
 
 switch ($mime) {
   case "image/png":
-    imagepng($orig, $path_to_full);
-    imagepng($thumbnail, $path_to_thumb);
+    if (!imagepng($orig, $path_to_full) || !imagepng($thumbnail, $path_to_thumb)) {
+      http_response_code(500);
+      echo "failed to save image\n";
+      exit;
+    };
     break;
   case "image/jpeg":
-    imagejpeg($orig, $path_to_full);
-    imagejpeg($thumbnail, $path_to_thumb);
+    if (!imagejpeg($orig, $path_to_full) || !imagejpeg($thumbnail, $path_to_thumb)) {
+      http_response_code(500);
+      echo "failed to save image\n";
+      exit;
+    };
     break;
   case "image/webp":
-    imagewebp($orig, $path_to_full);
-    imagewebp($thumbnail, $path_to_thumb);
+    if (!imagewebp($orig, $path_to_full) || !imagewebp($thumbnail, $path_to_thumb)) {
+      http_response_code(500);
+      echo "failed to save image\n";
+      exit;
+    };
     break;
   default:
     exit; // не обрабатывать и не делать ничего если не подходит mime;
