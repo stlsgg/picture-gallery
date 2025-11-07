@@ -1,2 +1,9 @@
+# libs
 node_modules
-
+# image extensions
+*.png
+*.jpg
+*.webp
+*.jpeg
+# information about pictures
+meta.json
