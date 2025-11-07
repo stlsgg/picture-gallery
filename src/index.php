@@ -16,6 +16,14 @@ function set_text()
 $upload_dir_original = "/data/full/";
 $upload_dir_thumbnail = "/data/thumb/";
 
+// создаем директории если они отсутствуют
+if (!file_exists($upload_dir_original)) {
+  mkdir($upload_dir_original, 755, recursive: true);
+}
+if (!file_exists($upload_dir_thumbnail)) {
+  mkdir($upload_dir_thumbnail, 755, recursive: true);
+}
+
 // проверка существования $_FILES['image']
 if (!isset($_FILES["image"]) || empty($_FILES["image"])) {
   // error, exit
