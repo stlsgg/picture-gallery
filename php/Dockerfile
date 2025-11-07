@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   libonig-dev \
   && rm -rf /var/lib/apt/lists/*
 
-RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
+RUN docker-php-ext-configure gd --with-webp --with-freetype --with-jpeg \
   && docker-php-ext-install -j$(nproc) gd mbstring zip
 
 COPY --from=composer:2.6 /usr/bin/composer /usr/local/bin/composer
