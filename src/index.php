@@ -99,6 +99,7 @@ if (filesize("./data/meta.json") === 0) {
 foreach ($metadata as $id => $pic_info) {
   if (strpos($pic_info["full"], $file_name) !== false) {
     http_response_code(400);
+    set_text();
     echo "dublicate image founded in storage\n";
     exit; // если нашли дубликат, выходим из скрипта
   }
