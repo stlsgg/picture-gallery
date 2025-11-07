@@ -30,11 +30,22 @@ header {
 .modal {
   &-header {
     display: flex;
+
     justify-content: space-between;
+
+    &:has(> .btn:only-child) {
+      justify-content: end;
+    }
   }
 
   &-title {
     align-content: center;
+  }
+
+  &-body {
+    img {
+      width: 100%;
+    }
   }
 }
 
