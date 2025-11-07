@@ -6,25 +6,32 @@ $allowed_mimes = [
   "image/webp"
 ];
 
+// upload dirs: original and thumbnail paths
+$DATA_DIR = "./data/";
+$FULL_DIR = $FULL_DIR . "full/";
+$THUMB_DIR = $DATA_DIR . "thumb/";
+$META = $DATA_DIR . "meta.json";
+
+// подготовка директорий перед работой с файлами
+// создаем директории если они отсутствуют
+function prepare_directories()
+{
+  global $DATA_DIR, $FULL_DIR, $THUMB_DIR;
+  if (!file_exists($DATA_DIR)) {
+    mkdir($DATA_DIR, 0755, true);
+  }
+  if (!file_exists($FULL_DIR)) {
+    mkdir($FULL_DIR, 0755, recursive: true);
+  }
+  if (!file_exists($THUMB_DIR)) {
+    mkdir($THUMB_DIR, 0755, recursive: true);
+  }
+}
+
 // alias на plain/text
 function set_text()
 {
   header("Content-Type: text/plain");
-}
-
-// пути, по которому сохраняем и полную картинку, и превьюшку
-$upload_dir_original = "./data/full/";
-$upload_dir_thumbnail = "./data/thumb/";
-
-// создаем директории если они отсутствуют
-if (!file_exists("./data")) {
-  mkdir("./data", 0755, true);
-}
-if (!file_exists($upload_dir_original)) {
-  mkdir($upload_dir_original, 0755, recursive: true);
-}
-if (!file_exists($upload_dir_thumbnail)) {
-  mkdir($upload_dir_thumbnail, 0755, recursive: true);
 }
 
 // проверка существования $_FILES['image']
