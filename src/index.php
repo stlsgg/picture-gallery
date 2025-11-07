@@ -142,7 +142,21 @@ $orig_height = imagesy($orig);
 
 // наложить watermark на оригинал
 // открыть watermark
+if (!file_exists("./data/template/watermark.png")) {
+  http_response_code(500);
+  set_text();
+  echo "watermark not found\n";
+  imagedestroy($orig);
+  exit;
+}
 $tmp_watermark = imagecreatefrompng("./data/template/watermark.png");
+if (!$tmp_watermark) {
+  http_response_code(500);
+  set_text();
+  echo "failed to open watermark in gd\n";
+  imagedestroy($orig);
+  exit;
+}
 // размеры открытой  watermark
 $tmp_w = imagesx($tmp_watermark);
 $tmp_h = imagesy($tmp_watermark);
