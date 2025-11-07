@@ -125,6 +125,14 @@ switch ($mime) {
     // default не должен отрабатывать, т.к. ранее в коде делается проверка
     // загруженного файла по mime
 }
+
+// check orig existing
+if ($orig === false) {
+  http_response_code(500);
+  set_text();
+  echo "failed to open image in gd\n";
+  exit;
+}
 // размеры $orig
 $orig_width = imagesx($orig);
 $orig_height = imagesy($orig);
