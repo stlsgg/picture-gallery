@@ -9,7 +9,7 @@ $allowed_mimes = [
 // alias на plain/text
 function set_text()
 {
-  header("Content-Type: plain/text");
+  header("Content-Type: text/plain");
 }
 
 // пути, по которому сохраняем и полную картинку, и превьюшку
