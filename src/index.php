@@ -17,11 +17,12 @@ $upload_dir_original = "/data/full/";
 $upload_dir_thumbnail = "/data/thumb/";
 
 // проверка существования $_FILES['image']
-if (!isset($_FILES["image"])) {
+if (!isset($_FILES["image"]) || empty($_FILES["image"])) {
   // error, exit
   http_response_code(400);
   set_text();
   echo "file to upload not provided\n";
+  exit;
 }
 
 // сохранение необходимой информации о картинке:
