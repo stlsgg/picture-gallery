@@ -60,11 +60,32 @@ $description = $_POST["desc"] ?? "no description provided";
 // вопрос в том, по какому критерию я проверяю на дубликат: имя или содержимое?
 // для простоты буду проверять по имени и просто выходить, если есть файл на
 // сервере
-$metadata = json_decode(file_get_contents("/data/meta.json"), true);
-// true конвертит в ассоциативный массив сразу, имба
+// попытка открыть файл meta по заданному пути
+if (!file_exists("/data/meta.json")) {
+  // создаем meta.json
+  touch("/data/meta.json");
+}
+$first_key = false;
+// если пустое - инициализируем $metadata сами внутри скрипта
+if (empty("/data/meta.json")) {
+  $metadata = [];
+  $first_key = true;
+} else {
+  // пробуем прочесть meta
+  $metadata = json_decode("/data/meta.json", true);
+  if (json_last_error() !== JSON_ERROR_NONE) {
+    http_response_code(400);
+    set_text();
+    echo "error while trying to parse meta.json\n";
+    echo "detailed: " . json_last_error_msg() . "\n";
+  }
+}
+
 // O(n) проход по ключам, ищем по каждому id файл
 foreach ($metadata as $id => $pic_info) {
   if (strpos($pic_info["full"], $file_name)) {
+    http_response_code(400);
+    echo "dublicate image founded in storage\n";
     exit; // если нашли дубликат, выходим из скрипта
   }
 }
@@ -161,7 +182,12 @@ imagedestroy($watermark);
 imagedestroy($thumbnail);
 
 // сохраняю мету о изображении
-$key = max(array_keys($metadata)) + 1;
+if ($first_key) {
+  $key = max(array_keys($metadata)) + 1;
+} else {
+  $key = 1;
+}
+
 $metadata[$key] = [
   "desc" => $description,
   "full" => $path_to_full,
