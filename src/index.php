@@ -36,6 +36,25 @@ function abort(int $status_code, string $message): void
   echo "$message\n";
 }
 
+// mapping на изображение: вызов конкретных функций в зависимости от mimetype
+// по сути эта проблема решается через ООП и перегрузку метода, но я пока тут
+// пишу в процедурном стиле
+$image_mapping = [
+  "image/png" => [
+    "open" => fn($filename) => imagecreatefrompng($filename),
+    "save" => fn($filename) => imagepng($filename)
+  ],
+
+  "image/jpeg" => [
+    "open" => fn($filename) => imagecreatefromjpeg($filename),
+    "save" => fn($filename) => imagejpeg($filename)
+  ],
+  "image/webp" => [
+    "open" => fn($filename) => imagecreatefromwebp($filename),
+    "save" => fn($filename) => imagewebp($filename)
+  ],
+];
+
 // проверка существования $_FILES['image']
 if (!isset($_FILES["image"]) || empty($_FILES["image"])) {
   abort(400, "file to upload not provided");
