@@ -28,18 +28,17 @@ function prepare_directories()
   }
 }
 
-// alias на plain/text
-function set_text()
+// abort function: вывод ошибки в http status code и вывод сообщения об ошибке
+function abort(int $status_code, string $message): void
 {
+  http_response_code($status_code);
   header("Content-Type: text/plain");
+  echo "$message\n";
 }
 
 // проверка существования $_FILES['image']
 if (!isset($_FILES["image"]) || empty($_FILES["image"])) {
-  // error, exit
-  http_response_code(400);
-  set_text();
-  echo "file to upload not provided\n";
+  abort(400, "file to upload not provided");
   exit;
 }
 
@@ -51,9 +50,7 @@ $image_info = $_FILES["image"];
 // проверка на ошибку в $_FILES
 $error = $image_info["error"];
 if ($error) {
-  http_response_code(400);
-  set_text();
-  echo "upload error with status code $error\n";
+  abort(400, "upload error with status code $error");
   exit;
 }
 
@@ -68,9 +65,7 @@ finfo_close($finfo);
 
 // проверка что загруженный файл подходит под allowed_mimes
 if (!in_array($mime, $allowed_mimes)) {
-  http_response_code(406);
-  set_text();
-  echo "file type not allowed\n";
+  abort(406, "file type not allowed");
   exit;
 }
 
@@ -95,9 +90,7 @@ if (filesize("./data/meta.json") === 0) {
   // пробуем прочесть meta
   $metadata = json_decode(file_get_contents("./data/meta.json"), true);
   if (json_last_error() !== JSON_ERROR_NONE) {
-    http_response_code(400);
-    set_text();
-    echo "error while trying to parse meta.json\n";
+    abort(400, "error while trying to parse meta.json");
     echo "detailed: " . json_last_error_msg() . "\n";
   }
 }
@@ -105,10 +98,9 @@ if (filesize("./data/meta.json") === 0) {
 // O(n) проход по ключам, ищем по каждому id файл
 foreach ($metadata as $id => $pic_info) {
   if (strpos($pic_info["full"], $file_name) !== false) {
-    http_response_code(400);
-    set_text();
-    echo "dublicate image founded in storage\n";
-    exit; // если нашли дубликат, выходим из скрипта
+    // если нашли дубликат, выходим из скрипта
+    abort(400, "dublicate image founded in storage");
+    exit;
   }
 }
 
@@ -139,9 +131,7 @@ switch ($mime) {
 
 // check orig existing
 if (!$orig) {
-  http_response_code(500);
-  set_text();
-  echo "failed to open image in gd\n";
+  abort(500, "failed to open image in gd");
   exit;
 }
 // размеры $orig
@@ -151,17 +141,13 @@ $orig_height = imagesy($orig);
 // наложить watermark на оригинал
 // открыть watermark
 if (!file_exists("./data/template/watermark.png")) {
-  http_response_code(500);
-  set_text();
-  echo "watermark not found\n";
+  abort(500, "watermark not found");
   imagedestroy($orig);
   exit;
 }
 $tmp_watermark = imagecreatefrompng("./data/template/watermark.png");
 if (!$tmp_watermark) {
-  http_response_code(500);
-  set_text();
-  echo "failed to open watermark in gd\n";
+  abort(500, "failed to open watermark in gd");
   imagedestroy($orig);
   exit;
 }
@@ -203,22 +189,19 @@ imagecopyresampled($thumbnail, $orig, 0, 0, $x, $y, 300, 300, $side, $side);
 switch ($mime) {
   case "image/png":
     if (!imagepng($orig, $path_to_full) || !imagepng($thumbnail, $path_to_thumb)) {
-      http_response_code(500);
-      echo "failed to save image\n";
+      abort(500, "failed to save processed image");
       exit;
     };
     break;
   case "image/jpeg":
     if (!imagejpeg($orig, $path_to_full) || !imagejpeg($thumbnail, $path_to_thumb)) {
-      http_response_code(500);
-      echo "failed to save image\n";
+      abort(500, "failed to save processed image");
       exit;
     };
     break;
   case "image/webp":
     if (!imagewebp($orig, $path_to_full) || !imagewebp($thumbnail, $path_to_thumb)) {
-      http_response_code(500);
-      echo "failed to save image\n";
+      abort(500, "failed to save processed image");
       exit;
     };
     break;
