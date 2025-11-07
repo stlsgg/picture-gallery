@@ -39,19 +39,19 @@ function abort(int $status_code, string $message): void
 // mapping на изображение: вызов конкретных функций в зависимости от mimetype
 // по сути эта проблема решается через ООП и перегрузку метода, но я пока тут
 // пишу в процедурном стиле
-$image_mapping = [
+$img_gd = [
   "image/png" => [
     "open" => fn($filename) => imagecreatefrompng($filename),
-    "save" => fn($filename) => imagepng($filename)
+    "save" => fn($filename, $path) => imagepng($filename, $path)
   ],
 
   "image/jpeg" => [
     "open" => fn($filename) => imagecreatefromjpeg($filename),
-    "save" => fn($filename) => imagejpeg($filename)
+    "save" => fn($filename, $path) => imagejpeg($filename, $path)
   ],
   "image/webp" => [
     "open" => fn($filename) => imagecreatefromwebp($filename),
-    "save" => fn($filename) => imagewebp($filename)
+    "save" => fn($filename, $path) => imagewebp($filename, $path)
   ],
 ];
 
@@ -133,21 +133,7 @@ $path_to_thumb = $upload_dir_thumbnail . "thumb__" . $file_name;
 // обработка изображения в зависимости от mime
 // здесь делаю watermark & thumbnail
 // открыть через gd само изображение
-switch ($mime) {
-  case "image/png":
-    $orig = imagecreatefrompng($file_content);
-    break;
-  case "image/jpeg":
-    $orig = imagecreatefromjpeg($file_content);
-    break;
-  case "image/webp":
-    $orig = imagecreatefromwebp($file_content);
-    break;
-  default:
-    exit; // не обрабатывать и не делать ничего если не подходит mime;
-    // default не должен отрабатывать, т.к. ранее в коде делается проверка
-    // загруженного файла по mime
-}
+$orig = $img_gd['open'][$mime]($file_content);
 
 // check orig existing
 if (!$orig) {
@@ -165,7 +151,8 @@ if (!file_exists("./data/template/watermark.png")) {
   imagedestroy($orig);
   exit;
 }
-$tmp_watermark = imagecreatefrompng("./data/template/watermark.png");
+$tmp_watermark = $img_gd['open']["image/png"]("./data/template/watermark.png");
+
 if (!$tmp_watermark) {
   abort(500, "failed to open watermark in gd");
   imagedestroy($orig);
