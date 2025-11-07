@@ -6,6 +6,10 @@
     <title>Gallery</title>
   </head>
   <body>
-    hello
+    <form action="index.php" method="post" enctype="multipart/form-data">
+      <input type="file" name="image" required />
+      <input type="text" name="desc" placeholder="описание (необязательно)" />
+      <input type="submit" value="отправить" />
+    </form>
   </body>
 </html>
