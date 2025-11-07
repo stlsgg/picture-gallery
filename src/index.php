@@ -191,9 +191,9 @@ imagedestroy($thumbnail);
 
 // сохраняю мету о изображении
 if ($first_key) {
-  $key = max(array_keys($metadata)) + 1;
-} else {
   $key = 1;
+} else {
+  $key = max(array_keys($metadata)) + 1;
 }
 
 $metadata[$key] = [
