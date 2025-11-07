@@ -80,7 +80,7 @@ if (filesize("/data/meta.json") === 0) {
   $first_key = true;
 } else {
   // пробуем прочесть meta
-  $metadata = json_decode("/data/meta.json", true);
+  $metadata = json_decode(file_get_contents("/data/meta.json"), true);
   if (json_last_error() !== JSON_ERROR_NONE) {
     http_response_code(400);
     set_text();
