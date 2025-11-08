@@ -132,7 +132,7 @@ $path_to_thumb = $THUMB_DIR . "thumb__" . $file_name;
 // обработка изображения в зависимости от mime
 // здесь делаю watermark & thumbnail
 // открыть через gd само изображение
-$orig = $img_gd['open'][$mime]($file_content);
+$orig = $img_gd[$mime]['open']($file_content);
 
 // check orig existing
 if (!$orig) {
@@ -148,7 +148,7 @@ if (!file_exists("./data/template/watermark.png")) {
   imagedestroy($orig);
   abort(500, "watermark not found");
 }
-$tmp_watermark = $img_gd['open']["image/png"]("./data/template/watermark.png");
+$tmp_watermark = $img_gd['image/png']["open"]("./data/template/watermark.png");
 
 if (!$tmp_watermark) {
   imagedestroy($orig);
