@@ -34,6 +34,7 @@ function abort(int $status_code, string $message): void
   http_response_code($status_code);
   header("Content-Type: text/plain");
   echo "$message\n";
+  exit;
 }
 
 // mapping на изображение: вызов конкретных функций в зависимости от mimetype
@@ -58,7 +59,6 @@ $img_gd = [
 // проверка существования $_FILES['image']
 if (!isset($_FILES["image"]) || empty($_FILES["image"])) {
   abort(400, "file to upload not provided");
-  exit;
 }
 
 // сохранение необходимой информации о картинке:
@@ -70,7 +70,6 @@ $image_info = $_FILES["image"];
 $error = $image_info["error"];
 if ($error) {
   abort(400, "upload error with status code $error");
-  exit;
 }
 
 $file_name = $image_info["name"];
@@ -85,7 +84,6 @@ finfo_close($finfo);
 // проверка что загруженный файл подходит под allowed_mimes
 if (!in_array($mime, $allowed_mimes)) {
   abort(406, "file type not allowed");
-  exit;
 }
 
 // описание картинки может идти с $_POST
@@ -109,9 +107,8 @@ if (filesize("./data/meta.json") === 0) {
   // пробуем прочесть meta
   $metadata = json_decode(file_get_contents("./data/meta.json"), true);
   if (json_last_error() !== JSON_ERROR_NONE) {
-    abort(400, "error while trying to parse meta.json");
     echo "detailed: " . json_last_error_msg() . "\n";
-    exit;
+    abort(400, "error while trying to parse meta.json");
   }
 }
 
@@ -120,7 +117,6 @@ foreach ($metadata as $id => $pic_info) {
   if (strpos($pic_info["full"], $file_name) !== false) {
     // если нашли дубликат, выходим из скрипта
     abort(400, "dublicate image founded in storage");
-    exit;
   }
 }
 
@@ -138,7 +134,6 @@ $orig = $img_gd['open'][$mime]($file_content);
 // check orig existing
 if (!$orig) {
   abort(500, "failed to open image in gd");
-  exit;
 }
 // размеры $orig
 $orig_width = imagesx($orig);
@@ -147,16 +142,14 @@ $orig_height = imagesy($orig);
 // наложить watermark на оригинал
 // открыть watermark
 if (!file_exists("./data/template/watermark.png")) {
-  abort(500, "watermark not found");
   imagedestroy($orig);
-  exit;
+  abort(500, "watermark not found");
 }
 $tmp_watermark = $img_gd['open']["image/png"]("./data/template/watermark.png");
 
 if (!$tmp_watermark) {
-  abort(500, "failed to open watermark in gd");
   imagedestroy($orig);
-  exit;
+  abort(500, "failed to open watermark in gd");
 }
 // размеры открытой  watermark
 $tmp_w = imagesx($tmp_watermark);
@@ -197,19 +190,16 @@ switch ($mime) {
   case "image/png":
     if (!imagepng($orig, $path_to_full) || !imagepng($thumbnail, $path_to_thumb)) {
       abort(500, "failed to save processed image");
-      exit;
     };
     break;
   case "image/jpeg":
     if (!imagejpeg($orig, $path_to_full) || !imagejpeg($thumbnail, $path_to_thumb)) {
       abort(500, "failed to save processed image");
-      exit;
     };
     break;
   case "image/webp":
     if (!imagewebp($orig, $path_to_full) || !imagewebp($thumbnail, $path_to_thumb)) {
       abort(500, "failed to save processed image");
-      exit;
     };
     break;
   default:
