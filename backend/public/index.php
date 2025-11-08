@@ -1,14 +1,14 @@
 <?php
-require_once "./Storage.php";
-require_once "./Request.php";
-require_once "./Response.php";
+require_once "../src/classes/Storage.php";
+require_once "../src/classes/Request.php";
+require_once "../src/classes/Response.php";
 
 $uri = $_SERVER["REQUEST_URI"];
 
 
 // open meta.json
 try {
-  $db = new Storage("../data/meta.json");
+  $db = new Storage("../src/data/meta.json");
 } catch (Exception $err) {
   Response::error(
     code: 500,
