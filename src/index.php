@@ -231,3 +231,5 @@ $metadata[$key] = [
 ];
 
 file_put_contents("./data/meta.json", json_encode($metadata), LOCK_EX);
+
+header('Location: /index.html');
