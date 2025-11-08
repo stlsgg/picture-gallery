@@ -5,8 +5,10 @@ node_modules
 *.jpg
 *.webp
 *.jpeg
+
 # information about pictures
 *.json
+
 # dev: ignore css
 *.css
 *.css.map
