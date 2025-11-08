@@ -152,7 +152,7 @@ class ImageHandler
 
   public function __destruct()
   {
-    if (is_resource($this->image)) {
+    if ($this->image instanceof GdImage) {
       imagedestroy($this->image);
     }
   }
