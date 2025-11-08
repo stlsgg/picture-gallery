@@ -16,7 +16,7 @@ RUN docker-php-ext-configure gd --with-webp --with-freetype --with-jpeg \
 
 COPY --from=composer:2.6 /usr/bin/composer /usr/local/bin/composer
 
-WORKDIR /var/www/html
+WORKDIR /var/www/backend
 
 RUN usermod -u 1000 www-data || true
 
