@@ -3,7 +3,7 @@
 class Response
 {
   // success response
-  public static function ok(array $data)
+  public static function ok(array|string $data)
   {
     header("Content-Type: application/json");
     echo json_encode(["status" => "ok", "data" => $data]);
