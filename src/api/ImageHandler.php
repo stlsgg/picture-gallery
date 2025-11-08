@@ -27,14 +27,20 @@ class ImageHandler
   }
 
   // создаем на основе original изображения thumbnail GdImage
-  public function createThumbnail(): GdImage
+  public function createThumbnail(): ImageHandler
   {
     // NOTE 300px hard coded значение - пока так задумано под сайт
-    return $this->resizeImage(
+    $thumbnail = $this->resizeImage(
       saveProportions: false,
       newWidth: 300,
       newHeight: 300
     );
+
+    // дата и время, накладываю на thumbnail
+    $date = date("Y-m-d H:i:s");
+    $thumbnail->setText($date);
+
+    return $thumbnail;
   }
 
   // создаем watermark на исходном изображении
@@ -50,7 +56,7 @@ class ImageHandler
     $scale = $wm_w / $watermark->sizes["width"];
     $wm_h = intval($watermark->sizes["height"] * $scale);
 
-    $watermark->image = $watermark->resizeImage(
+    $watermark = $watermark->resizeImage(
       saveProportions: true,
       newWidth: $wm_w,
       newHeight: $wm_h
@@ -87,7 +93,7 @@ class ImageHandler
     bool $saveProportions,
     int $newWidth,
     int $newHeight
-  ): GdImage {
+  ): ImageHandler {
     $newImage = imagecreatetruecolor($newWidth, $newHeight);
     // сохраняю прозрачность
     imagesavealpha($newImage, true);
@@ -114,7 +120,28 @@ class ImageHandler
       $saveProportions ? $this->sizes["height"] : $side,
     );
 
-    return $newImage;
+    $resized = clone $this;
+    $resized->image = $newImage;
+    $resized->sizes["width"] = $newWidth;
+    $resized->sizes["height"] = $newHeight;
+
+    return $resized;
+  }
+
+  // наложить текст на картинку
+  public function setText(string $text): bool
+  {
+    $color = imagecolorallocate($this->image, 255, 255, 255);
+
+    // ширина текста
+    $text_width = imagefontwidth(5) * strlen($text);
+    $text_height = imagefontheight(5);
+
+    // координаты: по центру снизу с отступом 10px
+    $x = ($this->sizes["width"] - $text_width) / 2;
+    $y = $this->sizes["height"] - $text_height - 10;
+
+    return imagestring($this->image, 5, $x, $y, $text, $color);
   }
 
   // получить оригинальную картинку
