@@ -125,8 +125,8 @@ foreach ($metadata as $id => $pic_info) {
 
 // формирую объект, который потом вставлю в meta.json
 // результирующие пути, по которым буду сохранять изображения
-$path_to_full = $upload_dir_original . $file_name;
-$path_to_thumb = $upload_dir_thumbnail . "thumb__" . $file_name;
+$path_to_full = $FULL_DIR . $file_name;
+$path_to_thumb = $THUMB_DIR . "thumb__" . $file_name;
 
 
 // обработка изображения в зависимости от mime
