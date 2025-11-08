@@ -19,7 +19,7 @@ try {
 
 // open request
 try {
-$req = new Request($uri);
+  $req = new Request($uri);
 } catch (Exception $err) {
   Response::error(
     code: 400,
@@ -29,6 +29,26 @@ $req = new Request($uri);
 }
 
 // get response by request
-$id = $req->getId();
-$field = $req->getField();
-Response::ok(["id" => $id, "field" => $field]);
+if ($req->isCollection()) {
+  Response::ok($db->readAll());
+}
+
+if ($req->isSingle()) {
+  $id = $req->getId();
+  $obj = $db->readById($id);
+  if (!$obj) Response::error(404, "object with id $id not found");
+  Response::ok($obj);
+}
+
+if ($req->isField()) {
+  $id = $req->getId();
+  $field = $req->getField();
+  $obj = $db->readById($id);
+  if (!$obj) Response::error(404, "object with id $id not found");
+  if (!array_key_exists($field, $obj)) Response::error(404, "field $field not found");
+  Response::ok($obj[$field]);
+}
+
+// fallback error
+Response::error(503, "unsupported error");
+

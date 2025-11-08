@@ -42,4 +42,35 @@ class Request
     }
     return null;
   }
+
+  // проверка на наличие id в запросе
+  public function hasId(): bool
+  {
+    $m = [];
+    $pattern = "#^/api/images/(?P<id>\d+)(/|$)#";
+    return preg_match($pattern, $this->uri, $m) ? true : false;
+  }
+
+  // проверка на наличие field в запросе
+  public function hasField(): bool
+  {
+    $m = [];
+    $pattern = "#^/api/images/\d+/(?P<field>\w+)(/|$)#";
+    return preg_match($pattern, $this->uri, $m) ? true : false;
+  }
+
+  public function isCollection(): bool
+  {
+    return !$this->hasId();
+  }
+
+  public function isSingle(): bool
+  {
+    return $this->hasId() && !$this->hasField();
+  }
+
+  public function isField(): bool
+  {
+    return $this->hasId() && $this->hasField();
+  }
 }
