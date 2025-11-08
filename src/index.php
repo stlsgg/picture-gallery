@@ -8,7 +8,7 @@ $allowed_mimes = [
 
 // upload dirs: original and thumbnail paths
 $DATA_DIR = "./data/";
-$FULL_DIR = $FULL_DIR . "full/";
+$FULL_DIR = $DATA_DIR . "full/";
 $THUMB_DIR = $DATA_DIR . "thumb/";
 $META = $DATA_DIR . "meta.json";
 
