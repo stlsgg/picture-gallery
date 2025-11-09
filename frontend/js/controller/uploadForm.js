@@ -1,7 +1,7 @@
 // Модуль, отвечающий за события формы загрузки файла
 // TODO сделать переиспользуемые функции
 
-import { initDragAndDrop } from "./dragAndDrop.js";
+import { initDragAndDrop, showPreview } from "./dragAndDrop.js";
 import { renderState } from "../view/renderState.js";
 
 export function form() {
@@ -15,6 +15,30 @@ export function form() {
   const label = dropZone.querySelector("label");
 
   initDragAndDrop(dropZone, fileInput, label);
+
+  // paste image event handler
+  document.addEventListener("paste", (event) => {
+    const items = event.clipboardData?.items;
+    if (!items) return;
+
+    for (const item of items) {
+      if (item.type.startsWith("image/")) {
+        const file = item.getAsFile();
+        if (!file) return;
+
+        if (file) {
+          const dataTransfer = new DataTransfer();
+          dataTransfer.items.add(file);
+          fileInput.files = dataTransfer.files;
+
+          showPreview(file, dropZone);
+          renderState(label, { innerText: file.name });
+
+          return;
+        }
+      }
+    }
+  });
 
   submitBtn.addEventListener("click", async () => {
     const formContents = new FormData(formElem);

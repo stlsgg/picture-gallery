@@ -30,18 +30,6 @@ import { renderState } from "../view/renderState.js";
  * @todo Consider moving validation and preview rendering to separate helper functions.
  */
 export function initDragAndDrop(dropZone, fileInput, label) {
-  function showPreview(file) {
-    dropZone.querySelectorAll("img").forEach((child) => {
-      dropZone.removeChild(child);
-    });
-    const imgPreview = document.createElement("img");
-    imgPreview.className = "preview";
-    const url = URL.createObjectURL(file);
-    imgPreview.src = url;
-    imgPreview.onload = () => URL.revokeObjectURL(url);
-    dropZone.appendChild(imgPreview);
-  }
-
   dropZone.addEventListener("dragover", (e) => {
     e.preventDefault();
     dropZone.classList.add("active");
@@ -71,7 +59,7 @@ export function initDragAndDrop(dropZone, fileInput, label) {
     }
 
     fileInput.files = files;
-    showPreview(file);
+    showPreview(file, dropZone);
     renderState(label, { innerText: file.name });
   });
 
@@ -93,7 +81,19 @@ export function initDragAndDrop(dropZone, fileInput, label) {
 
     fileInput.files = files;
 
-    showPreview(file);
+    showPreview(file, dropZone);
     renderState(label, { innerText: file.name });
   });
+}
+
+export function showPreview(file, dropZone) {
+  dropZone.querySelectorAll("img").forEach((child) => {
+    dropZone.removeChild(child);
+  });
+  const imgPreview = document.createElement("img");
+  imgPreview.className = "preview";
+  const url = URL.createObjectURL(file);
+  imgPreview.src = url;
+  imgPreview.onload = () => URL.revokeObjectURL(url);
+  dropZone.appendChild(imgPreview);
 }
