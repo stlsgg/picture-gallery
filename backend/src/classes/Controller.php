@@ -23,7 +23,10 @@ class Controller
   // читаю Request
   public function __construct()
   {
-    require_once "./Storage.php";
+    require_once __DIR__ . "/Storage.php";
+    require_once __DIR__ . "/Response.php";
+    require_once __DIR__ . "/Request.php";
+
     try {
       $this->db = new Storage("/src/data/meta.json");
     } catch (Exception $err) {
@@ -48,7 +51,10 @@ class Controller
   // callback на загрузку фото на сервер
   public function postImage(): void
   {
-    require_once "./Image.php";
+    require_once __DIR__ . "/Image.php";
+    require_once __DIR__ . "/ImageHandler.php";
+    require_once __DIR__ . "/FileManager.php";
+
     // проверка mime загруженного файла идет внутри класса Image
     try {
       $image = new Image();
