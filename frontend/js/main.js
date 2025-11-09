@@ -14,10 +14,6 @@ import { renderState } from "./view/renderState.js";
 // DE - DOM Elements
 const DE = getDOMElements(DOM_IDS);
 
-// загружаю текующую страницу
-// let currPage = INITIAL_STATE.currentPage || 1;
-let currPage = 1;
-
 async function loadPage(pageNum, itemsOnPage = 10) {
   // вычисляю пул картинок на страницу
   let firstEl = getFirstElement(pageNum, itemsOnPage);
@@ -94,7 +90,7 @@ renderState(paginationHub, { innerHTML: "" });
 for (let i = 1; i <= totalPages; i++) {
   const pageLink = document.createElement("li");
   renderState(pageLink, {
-    className: currPage === i ? "c-hand page-item active" : "c-hand page-item",
+    className: 1 === i ? "c-hand page-item active" : "c-hand page-item",
   });
 
   const link = document.createElement("a");
