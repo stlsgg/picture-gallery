@@ -21,3 +21,14 @@ export function getFirstElement(currentPage, elementsPerPage) {
 export function getLastElement(currentPage, elementsPerPage) {
   return elementsPerPage * currentPage;
 }
+
+/**
+ * Get total amout of pages depending on the number of elements.
+ *
+ * @param {number} totalElements - Total amount of elements.
+ * @param {number} elementsPerPage - Total amount of elements on a page.
+ * @returns {number} totalPages - Total amount of pages.
+ */
+export function getTotalPages(totalElements, elementsPerPage) {
+  return Math.ceil(totalElements / elementsPerPage);
+}

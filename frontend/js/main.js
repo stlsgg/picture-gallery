@@ -2,7 +2,11 @@
 import { API_URL, DOM_IDS, INITIAL_STATE } from "./model/constants.js";
 import { getDOMElements } from "./view/domElements.js";
 import { checkAPI, fetchImages } from "./controller/api.js";
-import { getFirstElement, getLastElement } from "./controller/pagination.js";
+import {
+  getFirstElement,
+  getLastElement,
+  getTotalPages,
+} from "./controller/pagination.js";
 import { form } from "./controller/uploadForm.js";
 import { renderState } from "./view/renderState.js";
 
@@ -79,7 +83,7 @@ const meta = await fetch("http://api.gg.ru/api/images").then((res) =>
   res.json(),
 );
 const totalElements = Object.keys(meta.data).length; // допустим 16 элементов
-const totalPages = Math.ceil(totalElements / 10); // общее количество
+const totalPages = getTotalPages(totalElements, 10); // общее количество
 // страниц, округление вверх
 
 // pagination элемент
