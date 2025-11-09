@@ -90,8 +90,9 @@ class Controller
     $imageWorker->putWatermark();
 
     // добавление информации в meta.json (добавление объекта)
-    $fullPath = "/var/www/backend/public/upload/full/" . $image->name;
-    $thumbPath = "/var/www/backend/public/upload/thumbnails/" . "thumb__" . $image->name;
+    $rootPath = "/var/www/backend/public";
+    $fullPath = "/upload/full/" . $image->name;
+    $thumbPath = "/upload/thumbnails/" . "thumb__" . $image->name;
     $imageObject = [
       "desc" => $_POST["desc"] ?? "no description",
       "full" => $fullPath,
@@ -101,8 +102,8 @@ class Controller
     $this->db->create($imageObject);
 
     // загрузка на сервер через FileManager
-    FileManager::saveImage($thumbnail->getImage(), $thumbPath, $image->mimetype);
-    FileManager::saveImage($imageWorker->getImage(), $fullPath, $image->mimetype);
+    FileManager::saveImage($thumbnail->getImage(), $rootPath . $thumbPath, $image->mimetype);
+    FileManager::saveImage($imageWorker->getImage(), $rootPath . $fullPath, $image->mimetype);
   }
 
   // перехватывает запрос и вызывает нужный callback
