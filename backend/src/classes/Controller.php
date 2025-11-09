@@ -108,28 +108,33 @@ class Controller
   // перехватывает запрос и вызывает нужный callback
   public function requestHandler(): void
   {
-    // TODO проверка на method
     // POST разрешен только на /api/images
     // GET разрешен на id, поля и /api/images
     // get response by request
-    if ($this->request->isCollection()) {
-      Response::ok($this->db->readAll());
-    }
+    $method = $this->request->getMethod();
+    if ($method === "POST") {
+      $this->postImage();
+      Response::ok(["message" => "image uploaded"]);
+    } else if ($method === "GET") {
+      if ($this->request->isCollection()) {
+        Response::ok($this->db->readAll());
+      }
 
-    if ($this->request->isSingle()) {
-      $id = $this->request->getId();
-      $obj = $this->db->readById($id);
-      if (!$obj) Response::error(404, "object with id $id not found");
-      Response::ok($obj);
-    }
+      if ($this->request->isSingle()) {
+        $id = $this->request->getId();
+        $obj = $this->db->readById($id);
+        if (!$obj) Response::error(404, "object with id $id not found");
+        Response::ok($obj);
+      }
 
-    if ($this->request->isField()) {
-      $id = $this->request->getId();
-      $field = $this->request->getField();
-      $obj = $this->db->readById($id);
-      if (!$obj) Response::error(404, "object with id $id not found");
-      if (!array_key_exists($field, $obj)) Response::error(404, "field $field not found");
-      Response::ok($obj[$field]);
+      if ($this->request->isField()) {
+        $id = $this->request->getId();
+        $field = $this->request->getField();
+        $obj = $this->db->readById($id);
+        if (!$obj) Response::error(404, "object with id $id not found");
+        if (!array_key_exists($field, $obj)) Response::error(404, "field $field not found");
+        Response::ok($obj[$field]);
+      }
     }
 
     // fallback error
