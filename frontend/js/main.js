@@ -1,7 +1,7 @@
 // include modules here
 import { API_URL, DOM_IDS } from "./model/constants.js";
 import { getDOMElements } from "./view/domElements.js";
-import { checkAPI, fetchImages } from "./controller/api.js";
+import { checkAPI, fetchDB, fetchImages } from "./controller/api.js";
 import {
   getFirstElement,
   getLastElement,
@@ -72,41 +72,34 @@ ${desc} </div></div>`;
 form();
 loadPage(1);
 
-// инициализация элемента с номерами страниц
 async function initPagination() {
-  // надо узнать общее количество страниц
-  // fetch всего meta.json и оценка, сколько там ключей
-  const meta = await fetch("http://api.gg.ru/api/images").then((res) =>
-    res.json(),
-  );
-  const totalElements = Object.keys(meta.data).length; // допустим 16 элементов
-  const totalPages = getTotalPages(totalElements, 10); // общее количество
-  // страниц, округление вверх
+  const imageDB = await fetchDB(API_URL);
+  const totalPages = getTotalPages(imageDB.length, 10);
 
-  // pagination элемент
-  const paginationHub = document.getElementById("pagination");
-  // clear pagination before creating new page elements
-  renderState(paginationHub, { innerHTML: "" });
+  const paginationContainer = document.getElementById("pagination");
+  renderState(paginationContainer, { innerHTML: "" });
 
   for (let i = 1; i <= totalPages; i++) {
-    const pageLink = document.createElement("li");
-    renderState(pageLink, {
-      className: 1 === i ? "c-hand page-item active" : "c-hand page-item",
+    const pageItem = document.createElement("li");
+    // Yoda conditions
+    const isFirstPage = 1 === i;
+    renderState(pageItem, {
+      className: isFirstPage ? "c-hand page-item active" : "c-hand page-item",
     });
 
-    const link = document.createElement("a");
-    renderState(link, { innerText: i });
+    const pageAnchor = document.createElement("a");
+    renderState(pageAnchor, { innerText: i });
 
-    link.addEventListener("click", () => {
-      const links = paginationHub.querySelectorAll("li");
-      links.forEach((element) =>
+    pageAnchor.addEventListener("click", () => {
+      const paginationItems = paginationContainer.querySelectorAll("li");
+      paginationItems.forEach((element) =>
         renderState(element, { className: "c-hand page-item" }),
       );
-      renderState(pageLink, { className: "c-hand page-item active" });
+      renderState(pageItem, { className: "c-hand page-item active" });
       loadPage(i);
     });
 
-    pageLink.appendChild(link);
-    paginationHub.appendChild(pageLink);
+    pageItem.appendChild(pageAnchor);
+    paginationContainer.appendChild(pageItem);
   }
 }
