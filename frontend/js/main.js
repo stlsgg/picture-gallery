@@ -18,12 +18,15 @@ async function loadPage(pageNum, itemsOnPage = 10) {
   // вычисляю пул картинок на страницу
   let firstEl = getFirstElement(pageNum, itemsOnPage);
   let lastEl = getLastElement(pageNum, itemsOnPage);
+  renderState(DE["gallery"], {
+    innerHTML: "<div class='loading loading-lg' id='loading-state'></div>",
+    className: "gallery gallery-single",
+  });
 
   // загружаю картинки из сервера
   // быстрый чек доступности
   if (!checkAPI(API_URL)) console.error("api not working!");
   const images = await fetchImages(firstEl, lastEl, API_URL);
-  DE["gallery"].innerHTML = ""; // clear page
 
   images.forEach((image, idx) => {
     // загружаю на страницу
@@ -51,8 +54,13 @@ async function loadPage(pageNum, itemsOnPage = 10) {
       window.location.href = "#modal-full-image-window";
     });
 
+    renderState(DE["gallery"], {
+      className: "gallery",
+    });
+
     DE["gallery"].appendChild(card);
   });
+  DE["gallery"].removeChild(document.getElementById("loading-state"));
 }
 
 function createCard(src, desc) {

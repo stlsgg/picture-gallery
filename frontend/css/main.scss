@@ -25,6 +25,11 @@ header {
   .card {
     width: 300px;
   }
+
+  &-single {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
 }
 
 .modal {
