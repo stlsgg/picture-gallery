@@ -1,44 +1,19 @@
 // Модуль, отвечающий за события формы загрузки файла
 // TODO сделать переиспользуемые функции
 
+import { initDragAndDrop } from "./dragAndDrop.js";
+
 export function form() {
-  // drag and drop feature
-  const drop_zone = document.getElementById("drop-zone");
-  const file_input = document.getElementById("file-upload");
-  const label = drop_zone.querySelector("label");
-
-  drop_zone.addEventListener("dragover", (e) => {
-    e.preventDefault();
-    drop_zone.classList.add("active");
-  });
-
-  drop_zone.addEventListener("dragleave", (e) => {
-    e.preventDefault();
-    drop_zone.classList.remove("active");
-  });
-
-  drop_zone.addEventListener("drop", (e) => {
-    e.preventDefault();
-    drop_zone.classList.remove("active");
-
-    const file = e.dataTransfer.files[0];
-    file_input.files = e.dataTransfer.files;
-
-    label.innerText = file.name;
-  });
-
-  file_input.addEventListener("change", () => {
-    if (file_input.files.length > 0) {
-      const label = drop_zone.querySelector("label");
-      label.innerText = file_input.files[0].name;
-    } else {
-      label.innerText = "Перетащите сюда картинку :3";
-    }
-  });
-
   // upload form, AJAX upload
   const formElem = document.getElementById("upload-form");
   const submitBtn = document.getElementById("submit-btn");
+  const toastElem = document.getElementById("toast");
+
+  const dropZone = document.getElementById("drop-zone");
+  const fileInput = dropZone.querySelector("input[type='file'][name='image']");
+  const label = dropZone.querySelector("label");
+
+  initDragAndDrop(dropZone, fileInput, label);
 
   submitBtn.addEventListener("click", async () => {
     const formContents = new FormData(formElem);
@@ -49,6 +24,22 @@ export function form() {
     });
 
     const result = await response.json();
+    if (result?.status === "ok") {
+      toastElem.querySelector("h6").innerText = "Успешно!";
+      toastElem.querySelector("p").innerText =
+        "Картинка была загружена на сервер.";
+      renderState(toastElem, { className: "toast toast-success toast-active" });
+      toastElem
+        .querySelector("i.icon.icon-cross")
+        .addEventListener("click", () => {
+          toastElem.querySelector("h6").innerText = "";
+          toastElem.querySelector("p").innerText = "";
+          renderState(toastElem, { className: "toast" });
+        });
+    }
+    formElem.reset();
+    label.innerText = "Перетащите сюда картинку :3";
     console.log(result);
+    window.location.href = "#close";
   });
 }
