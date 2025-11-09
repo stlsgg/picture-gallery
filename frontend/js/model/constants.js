@@ -1,6 +1,8 @@
 // project configuration
 // save constants here
 
+export const API_URL = "http://api.gg.ru";
+
 export const DOM_IDS = {
   gallery: "gallery",
   openModalBtn: "open-modal-window-upload-form",
