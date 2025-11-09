@@ -1,50 +1,68 @@
-// drag and drop feature
-const drop_zone = document.getElementById("drop-zone");
-const file_input = document.getElementById("file-upload");
+// include modules here
+import { API_URL, DOM_IDS, INITIAL_STATE } from "./model/constants.js";
+import { getDOMElements } from "./view/domElements.js";
+import { checkAPI, fetchImages } from "./controller/api.js";
+import { getFirstElement, getLastElement } from "./controller/pagination.js";
+import { form } from "./controller/uploadForm.js";
 
-drop_zone.addEventListener("dragover", (e) => {
-  e.preventDefault();
-  drop_zone.classList.add("active");
-});
+// здесь соединить controller, model, view functions воедино
+// загружаем галерею:
+// загрузка локального хранилища (текущая страница)
+// fetch фоток с api, инициализация элементов.
 
-drop_zone.addEventListener("dragleave", (e) => {
-  e.preventDefault();
-  drop_zone.classList.remove("active");
-});
+// загружаю constants
+// DE - DOM Elements
+const DE = getDOMElements(DOM_IDS);
 
-drop_zone.addEventListener("drop", (e) => {
-  e.preventDefault();
-  drop_zone.classList.remove("active");
+// загружаю текующую страницу
+// let currPage = INITIAL_STATE.currentPage || 1;
+let currPage = 3;
 
-  const file = e.dataTransfer.files[0];
-  file_input.files = e.dataTransfer.files;
+// загружаю картинки из сервера
+// вычисляю пул картинок на страницу
+const itemsOnPage = 6;
+let firstEl = getFirstElement(currPage, itemsOnPage);
+let lastEl = getLastElement(currPage, itemsOnPage);
 
-  const label = drop_zone.querySelector("label");
-  label.innerText = file.name;
-});
+// получаю данные о картинках
+// быстрый чек доступности
+if (!checkAPI(API_URL)) console.error("api not working!");
 
-file_input.addEventListener("change", () => {
-  if (file_input.files.length > 0) {
-    const label = drop_zone.querySelector("label");
-    label.innerText = file_input.files[0].name;
-  } else {
-    const label = drop_zone.querySelector("label");
-    label.innerText = "Перетащите сюда картинку :3";
-  }
-});
+const images = await fetchImages(firstEl, lastEl, API_URL);
 
-// upload form, AJAX upload
-const formElem = document.getElementById("upload-form");
-const submitBtn = document.getElementById("submit-btn");
+images.forEach((image, idx) => {
+  // загружаю на страницу
+  const card = document.createElement("div");
+  card.innerHTML = createCard(image?.thumb, image?.desc || "без описания!");
 
-submitBtn.addEventListener("click", async () => {
-  const formContents = new FormData(formElem);
+  card.addEventListener("click", () => {
+    const modalFullImageElem = document.getElementById(
+      "modal-full-image-window",
+    );
 
-  const response = await fetch(formElem.action, {
-    method: "POST",
-    body: formContents,
+    const loading = document.createElement("div");
+    loading.className = "loading loading-lg";
+    const modalFullImage = modalFullImageElem.querySelector("img");
+    modalFullImage.replaceWith(loading);
+
+    const newImage = document.createElement("img");
+    newImage.className = "img-responsive";
+    const desc = modalFullImageElem.querySelector(".description");
+    newImage.src = `${API_URL}/${images[idx]?.full}`;
+    newImage.alt = images[idx]?.desc || "нет описания, пипяу ;D";
+    desc.textContent = images[idx]?.desc || "нет описания, пипяу ;D";
+
+    loading.replaceWith(newImage);
+    window.location.href = "#modal-full-image-window";
   });
 
-  const result = await response.json();
-  console.log(result);
+  DE["gallery"].appendChild(card);
 });
+
+function createCard(src, desc) {
+  return `<div class="card"><div class="card-image"> <img src="${API_URL}/${src}"
+alt="${desc}" class="img-responsive" > </div> <div class="card-body">
+${desc} </div></div>`;
+}
+
+form();
