@@ -49,7 +49,7 @@ class ImageHandler
   public function putWatermark(): bool
   {
     $watermark = new ImageHandler(
-      "./data/template/watermark.png",
+      "/var/www/backend/src/data/watermark.png",
       "image/png"
     );
     // масштабирую водяной знак до 10% от оригинального изображения

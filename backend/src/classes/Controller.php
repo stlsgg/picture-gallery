@@ -76,7 +76,7 @@ class Controller
       }
     }
     // проверка на дубликат на сервере
-    if (file_exists("/upload/full" . $image->name)) {
+    if (file_exists("/var/www/backend/public/upload/full/" . $image->name)) {
       Response::error(409, "file already exists");
     }
 
@@ -88,6 +88,8 @@ class Controller
     $imageWorker->putWatermark();
 
     // добавление информации в meta.json (добавление объекта)
+    $fullPath = "/var/www/backend/public/upload/full/" . $image->name;
+    $thumbPath = "/var/www/backend/public/upload/thumbnails/" . "thumb__" . $image->name;
     $imageObject = [
       "desc" => "description",
       "full" => "full/path",
