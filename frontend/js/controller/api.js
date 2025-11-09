@@ -1,7 +1,7 @@
 // Модуль по API
 
 /**
- * Check API connection
+ * Check API connection.
  *
  * @param {string} APIUrl - URL to API for test connection.
  * @returns {boolean} connected - true if connected, otherwise false.
@@ -23,7 +23,7 @@ export async function checkAPI(APIUrl = "http://api.gg.ru") {
 }
 
 /**
- * Fetch data about images
+ * Fetch data about images.
  *
  * @param {number} firstIdx - Index of the first element (inclusive).
  * @param {number} lastIdx - Index of the last element (inclusive).
