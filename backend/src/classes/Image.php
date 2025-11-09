@@ -22,6 +22,7 @@ class Image
   {
     $finfo = finfo_open(FILEINFO_MIME_TYPE);
     $file = $_FILES['image'];
+    $this->tmp = $file['tmp_name'];
 
     // проверка существования $_FILES['image']
     if (!isset($file) || empty($file)) {
@@ -46,7 +47,6 @@ class Image
 
     // read info about file
     $this->name = $file['name'];
-    $this->tmp = $file['tmp_name'];
     $this->size = $file['size'];
   }
 }
