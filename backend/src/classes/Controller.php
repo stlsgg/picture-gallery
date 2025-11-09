@@ -28,7 +28,7 @@ class Controller
     require_once __DIR__ . "/Request.php";
 
     try {
-      $this->db = new Storage("/src/data/meta.json");
+      $this->db = new Storage("/var/www/backend/src/data/meta.json");
     } catch (Exception $err) {
       Response::error(
         code: 500,
@@ -93,16 +93,16 @@ class Controller
     $fullPath = "/var/www/backend/public/upload/full/" . $image->name;
     $thumbPath = "/var/www/backend/public/upload/thumbnails/" . "thumb__" . $image->name;
     $imageObject = [
-      "desc" => "description",
-      "full" => "full/path",
-      "thumb" => "thumb/path"
+      "desc" => $_POST["desc"] ?? "no description",
+      "full" => $fullPath,
+      "thumb" => $thumbPath
     ];
 
     $this->db->create($imageObject);
 
     // загрузка на сервер через FileManager
-    FileManager::saveImage($thumbnail->getImage(), "path", $image->mimetype);
-    FileManager::saveImage($imageWorker->getImage(), "path", $image->mimetype);
+    FileManager::saveImage($thumbnail->getImage(), $thumbPath, $image->mimetype);
+    FileManager::saveImage($imageWorker->getImage(), $fullPath, $image->mimetype);
   }
 
   // перехватывает запрос и вызывает нужный callback
