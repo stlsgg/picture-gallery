@@ -117,6 +117,10 @@ class Controller
       $this->postImage();
       Response::ok(["message" => "image uploaded"]);
     } else if ($method === "GET") {
+      if ($this->request->check()) {
+        Response::ok("check success");
+      }
+
       if ($this->request->isCollection()) {
         Response::ok($this->db->readAll());
       }

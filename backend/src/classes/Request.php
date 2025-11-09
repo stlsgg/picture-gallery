@@ -19,7 +19,7 @@ class Request
   // проверка валидности переданного uri
   private function validate(string $uri)
   {
-    if (!preg_match("#^/api/images(/(\d+(/\w+)?)?)?$#", $uri)) {
+    if (!preg_match("#^/api/(images|check)(/(\d+(/\w+)?)?)?$#", $uri)) {
       throw new InvalidURIException("invalid uri given: $uri");
     }
   }
@@ -84,5 +84,12 @@ class Request
   // получить метод запроса
   public function getMethod(): string {
     return $this->method;
+  }
+
+  // check api connection
+  public function check(): bool {
+    $m = [];
+    $pattern = "#^/api/check(/|$)#";
+    return preg_match($pattern, $this->uri, $m) ? true : false;
   }
 }
