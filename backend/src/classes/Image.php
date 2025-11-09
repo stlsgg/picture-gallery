@@ -34,7 +34,6 @@ class Image
     $this->error = $file['error'];
     if ($this->error) {
       throw new FileUploadException(
-        400,
         "upload error with status code $this->error"
       );
     }
