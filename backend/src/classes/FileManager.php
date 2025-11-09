@@ -5,9 +5,9 @@
 class FileManager
 {
   private const HANDLERS = [
-    "image/png" => fn($filename, $path) => imagepng($filename, $path),
-    "image/jpeg" => fn($filename, $path) => imagejpeg($filename, $path),
-    "image/webp" => fn($filename, $path) => imagewebp($filename, $path),
+    "image/png" => "imagepng",
+    "image/jpeg" => "imagejpeg",
+    "image/webp" => "imagewebp",
   ];
 
   // создание директории
@@ -23,7 +23,8 @@ class FileManager
     string $path,
     string $mime
   ): bool {
-    self::HANDLERS[$mime]($image, $path);
+    $save = self::HANDLERS[$mime];
+    $save($image, $path);
     return true;
   }
 
