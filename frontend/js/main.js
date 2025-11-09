@@ -1,5 +1,5 @@
 // include modules here
-import { API_URL, DOM_IDS, INITIAL_STATE } from "./model/constants.js";
+import { API_URL, DOM_IDS } from "./model/constants.js";
 import { getDOMElements } from "./view/domElements.js";
 import { checkAPI, fetchImages } from "./controller/api.js";
 import {

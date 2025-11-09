@@ -14,5 +14,3 @@ export const DOM_IDS = {
 export const INITIAL_STATE = {
   currentPage: 1,
 };
-
-export const LOCAL_STORAGE_KEY = "guzey-gallery";
