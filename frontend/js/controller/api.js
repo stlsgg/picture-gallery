@@ -3,12 +3,12 @@
 /**
  * Check API connection
  *
- * @param {string} apiCheckUrl - URL to API for test connection.
+ * @param {string} APIUrl - URL to API for test connection.
  * @returns {boolean} connected - true if connected, otherwise false.
  */
-async function checkAPI(apiCheckUrl = "http://api.gg.ru/api/check") {
+export async function checkAPI(APIUrl = "http://api.gg.ru") {
   try {
-    const api = await fetch(`${apiCheckUrl}`);
+    const api = await fetch(`${APIUrl}/api/check`);
     if (!api.ok) {
       console.error(`http error while testing api connection: ${api.status}`);
       console.log(`abort getImages.`);
@@ -30,7 +30,7 @@ async function checkAPI(apiCheckUrl = "http://api.gg.ru/api/check") {
  * @param {string} url - API url for fetching.
  * @returns {Promise<array|false>} images - Array of image data or false on failure.
  */
-async function fetchImages(firstIdx, lastIdx, url) {
+export async function fetchImages(firstIdx, lastIdx, url) {
   if (!url) {
     console.error(`no url provided, abort getImages`);
     return false;
