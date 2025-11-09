@@ -31,18 +31,8 @@ export async function checkAPI(APIUrl = "http://api.gg.ru") {
  * @returns {Promise<array|false>} images - Array of image data or false on failure.
  */
 export async function fetchImages(firstIdx, lastIdx, url) {
-  if (!url) {
-    console.error(`no url provided, abort getImages`);
-    return false;
-  }
-
   try {
-    const request = await fetch(`${url}/api/images`);
-    if (!request.ok) {
-      throw new Error(`HTTP error while fetching images: ${request.status}`);
-    }
-    const json = await request.json();
-    const all = Object.values(json.data);
+    const all = await fetchDB(url);
 
     const maxIdx = all.length;
     lastIdx = Math.min(lastIdx, maxIdx);
@@ -51,5 +41,31 @@ export async function fetchImages(firstIdx, lastIdx, url) {
   } catch (error) {
     console.error(`Error occured while trying to fetch images: ${error}`);
     return false;
+  }
+}
+
+/**
+ * Fetch data from DataBase.
+ *
+ * @param {string} url - API url for fetching.
+ * @returns {Promise<array|false>} data - Array of image data or false on failure.
+ */
+export async function fetchDB(url) {
+  if (!url) {
+    console.error(`no url provided, abort getImages`);
+    return false;
+  }
+  try {
+    return await fetch(`${url}/api/images`)
+      .then((response) => {
+        if (!response.ok)
+          throw new Error(
+            `HTTP Error when fetching DataBase: ${response.status}`,
+          );
+        return response.json();
+      })
+      .then((data) => Object.values(data.data));
+  } catch (error) {
+    throw new Error(`Error when trying to fetch DataBase: ${error}`);
   }
 }
