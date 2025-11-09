@@ -25,6 +25,9 @@ class ImageHandler
     $this->image = $create($filename);
     $this->sizes["width"] = imagesx($this->image);
     $this->sizes["height"] = imagesy($this->image);
+
+    imagealphablending($this->image,false);
+    imagesavealpha($this->image, true);
   }
 
   // создаем на основе original изображения thumbnail GdImage
@@ -73,6 +76,10 @@ class ImageHandler
 
     // прозрачность включаем
     imagesavealpha($this->image, true);
+    imagesavealpha($watermark->image, true);
+    imagealphablending($this->image, true);
+    imagealphablending($watermark->image, false);
+
     // копирую watermark на orig
     $res = imagecopy(
       $this->image,
@@ -97,7 +104,10 @@ class ImageHandler
   ): ImageHandler {
     $newImage = imagecreatetruecolor($newWidth, $newHeight);
     // сохраняю прозрачность
+    imagealphablending($newImage, false);
     imagesavealpha($newImage, true);
+    $transparent = imagecolorallocatealpha($newImage, 0, 0, 0, 127);
+    imagefill($newImage, 0, 0, $transparent);
 
     if (!$saveProportions) {
       $side = min($this->sizes["width"], $this->sizes["height"]); // нахожу наименьшую сторону изобр.
