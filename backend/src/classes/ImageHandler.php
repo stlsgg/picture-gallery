@@ -139,8 +139,8 @@ class ImageHandler
     $text_height = imagefontheight(5);
 
     // координаты: по центру снизу с отступом 10px
-    $x = ($this->sizes["width"] - $text_width) / 2;
-    $y = $this->sizes["height"] - $text_height - 10;
+    $x = (int)round(($this->sizes["width"] - $text_width) / 2);
+    $y = (int)round($this->sizes["height"] - $text_height - 10);
 
     return imagestring($this->image, 5, $x, $y, $text, $color);
   }
