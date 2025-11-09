@@ -7,7 +7,7 @@ class Request
   private string $uri = "";
   private string $method = "";
 
-  public function __construct(string $uri)
+  public function __construct(string $uri=$_SERVER["REQUEST_URI"])
   {
     $uri = rtrim($uri, "/");
     $this->validate($uri);
