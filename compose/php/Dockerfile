@@ -15,6 +15,7 @@ RUN docker-php-ext-configure gd --with-webp --with-freetype --with-jpeg \
   && docker-php-ext-install -j$(nproc) gd mbstring zip
 
 COPY --from=composer:2.6 /usr/bin/composer /usr/local/bin/composer
+COPY php.ini /usr/local/etc/php/conf.d/uploads.ini
 
 WORKDIR /var/www/backend
 
