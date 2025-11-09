@@ -2,6 +2,7 @@
 // TODO сделать переиспользуемые функции
 
 import { initDragAndDrop } from "./dragAndDrop.js";
+import { renderState } from "../view/renderState.js";
 
 export function form() {
   // upload form, AJAX upload
