@@ -36,9 +36,26 @@ export async function fetchImages(firstIdx, lastIdx, url) {
     return false;
   }
 
+  // запрос на максимальный index
+  const data = await fetch(`${url}/api/images`).then((res) => res.json());
+  const maxIdx = Object.keys(data.data).length;
+  lastIdx = lastIdx > maxIdx ? maxIdx : lastIdx;
+
   const requests = [];
   for (let i = firstIdx; i <= lastIdx; i++) {
-    requests.push(fetch(`${url}/api/images/${i}`).then((res) => res.json()));
+    requests.push(
+      fetch(`${url}/api/images/${i}`)
+        .then((res) => {
+          if (!res.ok) {
+            return null;
+          }
+          return res.json();
+        })
+        .catch((err) => {
+          console.error(err);
+          return null;
+        }),
+    );
   }
   const images = [];
   const results = await Promise.allSettled(requests);
