@@ -4,10 +4,6 @@ class Controller
 {
   private Storage $db;
   private Request $request;
-  private const array ROUTES = [
-    "POST" => fn() => $this->postImage(),
-    "GET" => fn() => $this->getImage(),
-  ];
 
   // бизнес процессы:
   // клиент заполнил форму и отправил POST:
