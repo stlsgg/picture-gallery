@@ -61,16 +61,20 @@ class Request
     return preg_match($pattern, $this->uri, $m) ? true : false;
   }
 
+  // сценарий, где клиент запросил общую структуру по пути /api/images
   public function isCollection(): bool
   {
     return !$this->hasId();
   }
 
+  // сценарий, где клиент запросил информацию только об одной картинке
   public function isSingle(): bool
   {
     return $this->hasId() && !$this->hasField();
   }
 
+  // сценарий, где клиент запросил информацию о конкретном поле у конкретной
+  // картинки
   public function isField(): bool
   {
     return $this->hasId() && $this->hasField();
