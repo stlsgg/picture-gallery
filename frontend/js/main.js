@@ -103,3 +103,5 @@ async function initPagination() {
     paginationContainer.appendChild(pageItem);
   }
 }
+
+initPagination();
