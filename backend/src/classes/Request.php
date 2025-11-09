@@ -5,12 +5,14 @@ class InvalidURIException extends Exception {};
 class Request
 {
   private string $uri = "";
+  private string $method = "";
 
   public function __construct(string $uri)
   {
     $uri = rtrim($uri, "/");
     $this->validate($uri);
     $this->uri = $uri;
+    $this->method = $_SERVER['REQUEST_METHOD'];
   }
 
   // проверка валидности переданного uri
@@ -72,5 +74,10 @@ class Request
   public function isField(): bool
   {
     return $this->hasId() && $this->hasField();
+  }
+
+  // получить метод запроса
+  public function getMethod(): string {
+    return $this->method;
   }
 }
