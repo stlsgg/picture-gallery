@@ -73,38 +73,40 @@ form();
 loadPage(1);
 
 // инициализация элемента с номерами страниц
-// надо узнать общее количество страниц
-// fetch всего meta.json и оценка, сколько там ключей
-const meta = await fetch("http://api.gg.ru/api/images").then((res) =>
-  res.json(),
-);
-const totalElements = Object.keys(meta.data).length; // допустим 16 элементов
-const totalPages = getTotalPages(totalElements, 10); // общее количество
-// страниц, округление вверх
+async function initPagination() {
+  // надо узнать общее количество страниц
+  // fetch всего meta.json и оценка, сколько там ключей
+  const meta = await fetch("http://api.gg.ru/api/images").then((res) =>
+    res.json(),
+  );
+  const totalElements = Object.keys(meta.data).length; // допустим 16 элементов
+  const totalPages = getTotalPages(totalElements, 10); // общее количество
+  // страниц, округление вверх
 
-// pagination элемент
-const paginationHub = document.getElementById("pagination");
-// clear pagination before creating new page elements
-renderState(paginationHub, { innerHTML: "" });
+  // pagination элемент
+  const paginationHub = document.getElementById("pagination");
+  // clear pagination before creating new page elements
+  renderState(paginationHub, { innerHTML: "" });
 
-for (let i = 1; i <= totalPages; i++) {
-  const pageLink = document.createElement("li");
-  renderState(pageLink, {
-    className: 1 === i ? "c-hand page-item active" : "c-hand page-item",
-  });
+  for (let i = 1; i <= totalPages; i++) {
+    const pageLink = document.createElement("li");
+    renderState(pageLink, {
+      className: 1 === i ? "c-hand page-item active" : "c-hand page-item",
+    });
 
-  const link = document.createElement("a");
-  renderState(link, { innerText: i });
+    const link = document.createElement("a");
+    renderState(link, { innerText: i });
 
-  link.addEventListener("click", () => {
-    const links = paginationHub.querySelectorAll("li");
-    links.forEach((element) =>
-      renderState(element, { className: "c-hand page-item" }),
-    );
-    renderState(pageLink, { className: "c-hand page-item active" });
-    loadPage(i);
-  });
+    link.addEventListener("click", () => {
+      const links = paginationHub.querySelectorAll("li");
+      links.forEach((element) =>
+        renderState(element, { className: "c-hand page-item" }),
+      );
+      renderState(pageLink, { className: "c-hand page-item active" });
+      loadPage(i);
+    });
 
-  pageLink.appendChild(link);
-  paginationHub.appendChild(pageLink);
+    pageLink.appendChild(link);
+    paginationHub.appendChild(pageLink);
+  }
 }
