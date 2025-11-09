@@ -42,6 +42,8 @@ class Storage
       "thumb" => $object['thumb']
     ];
 
+    $this->save();
+
     return true;
   }
 
