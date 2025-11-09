@@ -11,17 +11,18 @@ class ImageHandler
     "height" => 0,
   ];
   private const HANDLERS = [
-    "image/png" => fn($filename) => imagecreatefrompng($filename),
-    "image/jpeg" => fn($filename) => imagecreatefromjpeg($filename),
-    "image/webp" => fn($filename) => imagecreatefromwebp($filename),
+    "image/png" => "imagecreatefrompng",
+    "image/jpeg" => "imagecreatefromjpeg",
+    "image/webp" => "imagecreatefromwebp",
   ];
 
   public function __construct(string $filename, string $mime)
   {
-    if (!isset(self::HANDLERS[$mime])) {
+    $create = self::HANDLERS[$mime] ?? null;
+    if (!$create) {
       throw new UnsupportedMIMEException("unsupported mimetype: $mime");
     }
-    $this->image = self::HANDLERS[$mime]($filename);
+    $this->image = $create($filename);
     $this->sizes["width"] = imagesx($this->image);
     $this->sizes["height"] = imagesy($this->image);
   }
