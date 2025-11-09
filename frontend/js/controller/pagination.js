@@ -7,7 +7,7 @@
  * @param {number} elementsPerPage - Total amount of elements on a page.
  * @returns {number} firstElementIndex - Index of first element, starts with 1.
  */
-function getFirstElement(currentPage, elementsPerPage) {
+export function getFirstElement(currentPage, elementsPerPage) {
   return elementsPerPage * (currentPage - 1) + 1;
 }
 
@@ -18,6 +18,6 @@ function getFirstElement(currentPage, elementsPerPage) {
  * @param {number} elementsPerPage - Total amount of elements on a page.
  * @returns {number} lastElementIndex - Index of last element.
  */
-function getLastElement(currentPage, elementsPerPage) {
+export function getLastElement(currentPage, elementsPerPage) {
   return elementsPerPage * currentPage;
 }
