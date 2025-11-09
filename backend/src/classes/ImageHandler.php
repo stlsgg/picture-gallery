@@ -142,6 +142,16 @@ class ImageHandler
     $x = (int)round(($this->sizes["width"] - $text_width) / 2);
     $y = (int)round($this->sizes["height"] - $text_height - 10);
 
+    // черная обводка
+    $black = imagecolorallocate($this->image, 0, 0, 0);
+    for ($dx = -1; $dx <= 1; $dx++) {
+      for ($dy = -1; $dy <= 1; $dy++) {
+        if ($dx !== 0 || $dy !== 0) {
+          imagestring($this->image, 5, $x + $dx, $y + $dy, $text, $black);
+        }
+      }
+    }
+
     return imagestring($this->image, 5, $x, $y, $text, $color);
   }
 
