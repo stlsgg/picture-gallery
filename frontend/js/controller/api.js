@@ -36,33 +36,20 @@ export async function fetchImages(firstIdx, lastIdx, url) {
     return false;
   }
 
-  // запрос на максимальный index
-  const data = await fetch(`${url}/api/images`).then((res) => res.json());
-  const maxIdx = Object.keys(data.data).length;
-  lastIdx = lastIdx > maxIdx ? maxIdx : lastIdx;
+  try {
+    const request = await fetch(`${url}/api/images`);
+    if (!request.ok) {
+      throw new Error(`HTTP error while fetching images: ${request.status}`);
+    }
+    const json = await request.json();
+    const all = Object.values(json.data);
 
-  const requests = [];
-  for (let i = firstIdx; i <= lastIdx; i++) {
-    requests.push(
-      fetch(`${url}/api/images/${i}`)
-        .then((res) => {
-          if (!res.ok) {
-            return null;
-          }
-          return res.json();
-        })
-        .catch((err) => {
-          console.error(err);
-          return null;
-        }),
-    );
+    const maxIdx = all.length;
+    lastIdx = Math.min(lastIdx, maxIdx);
+
+    return all.slice(firstIdx - 1, lastIdx);
+  } catch (error) {
+    console.error(`Error occured while trying to fetch images: ${error}`);
+    return false;
   }
-  const images = [];
-  const results = await Promise.allSettled(requests);
-  results.forEach((result) => {
-    if (result.status === "fulfilled" && result.value?.data)
-      images.push(result.value.data);
-  });
-
-  return images;
 }
