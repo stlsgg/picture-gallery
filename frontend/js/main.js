@@ -32,3 +32,19 @@ file_input.addEventListener("change", () => {
     label.innerText = "Перетащите сюда картинку :3";
   }
 });
+
+// upload form, AJAX upload
+const formElem = document.getElementById("upload-form");
+const submitBtn = document.getElementById("submit-btn");
+
+submitBtn.addEventListener("click", async () => {
+  const formContents = new FormData(formElem);
+
+  const response = await fetch(formElem.action, {
+    method: "POST",
+    body: formContents,
+  });
+
+  const result = await response.json();
+  console.log(result);
+});

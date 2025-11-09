@@ -48,6 +48,7 @@
               action="http://api.gg.ru/api/images"
               method="post"
               enctype="multipart/form-data"
+              id="upload-form"
             >
               <div class="form-group">
                 <div class="drag-and-drop" id="drop-zone">
@@ -55,7 +56,9 @@
                   <label for="file-upload">Перетащите сюда картинку :3</label>
                 </div>
                 <input type="text" name="desc" placeholder="описание" />
-                <button type="submit" class="btn btn-primary">Отправить</button>
+                <button id="submit-btn" type="button" class="btn btn-primary">
+                  Отправить
+                </button>
               </div>
             </form>
           </div>
