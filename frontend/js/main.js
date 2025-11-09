@@ -14,7 +14,7 @@ const DE = getDOMElements(DOM_IDS);
 // let currPage = INITIAL_STATE.currentPage || 1;
 let currPage = 1;
 
-async function loadPage(pageNum, itemsOnPage = 6) {
+async function loadPage(pageNum, itemsOnPage = 10) {
   // вычисляю пул картинок на страницу
   let firstEl = getFirstElement(pageNum, itemsOnPage);
   let lastEl = getLastElement(pageNum, itemsOnPage);
@@ -71,7 +71,7 @@ const meta = await fetch("http://api.gg.ru/api/images").then((res) =>
   res.json(),
 );
 const totalElements = Object.keys(meta.data).length; // допустим 16 элементов
-const totalPages = Math.ceil(totalElements / 6); // общее количество
+const totalPages = Math.ceil(totalElements / 10); // общее количество
 // страниц, округление вверх
 
 // pagination элемент
@@ -100,4 +100,3 @@ for (let i = 1; i <= totalPages; i++) {
   pageLink.appendChild(link);
   paginationHub.appendChild(pageLink);
 }
-
