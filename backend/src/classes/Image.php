@@ -51,5 +51,9 @@ class Image
     $this->name = $file['name'];
     $this->size = $file['size'];
     $this->fext = finfo_file($fext, $this->tmp);
+
+    // free memory
+    finfo_close($fext);
+    finfo_close($finfo);
   }
 }
