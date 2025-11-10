@@ -4,13 +4,21 @@ class Response
 {
   /**
    * Send success response to the client
-   * @param array|string $data what server gives to client
+   *
+   * Sets the HTTP status code and, if data is provided,
+   * returns it as JSON.
+   *
+   * @param int $code http status code
+   * @param array|string|null $data optional data to sent in the response body
    * @return void closes connection between server and client
    */
-  public static function ok(array|string $data)
+  public static function ok(int $code, array|string|null $data = null)
   {
-    header("Content-Type: application/json");
-    echo json_encode(["status" => "ok", "data" => $data]);
+    http_response_code($code);
+    if ($data) {
+      header("Content-Type: application/json");
+      echo json_encode(["status" => "ok", "data" => $data]);
+    }
     exit;
   }
 
