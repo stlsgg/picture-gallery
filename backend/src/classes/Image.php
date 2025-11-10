@@ -22,7 +22,6 @@ class Image
   public function __construct()
   {
     $finfo = finfo_open(FILEINFO_MIME_TYPE);
-    $fext = finfo_open(FILEINFO_EXTENSION);
     $file = $_FILES['image'];
     $this->tmp = $file['tmp_name'];
 
@@ -50,10 +49,9 @@ class Image
     // read info about file
     $this->name = $file['name'];
     $this->size = $file['size'];
-    $this->fext = finfo_file($fext, $this->tmp);
+    $this->fext = explode("/", $this->mimetype)[1];
 
     // free memory
-    finfo_close($fext);
     finfo_close($finfo);
   }
 }
