@@ -144,6 +144,14 @@ class Controller
         if (!array_key_exists($field, $obj)) Response::error(404, "field $field not found");
         Response::ok($obj[$field]);
       }
+    } else if ($method === "DELETE") {
+      if (!$this->request->isSingle()) {
+        Response::error(400, "request must be with single image id only");
+      }
+      if ($this->db->delete($this->request->getId())) {
+        Response::ok("image successfully deleted");
+      }
+      Response::error(500, "unexpected error while deleting image")
     }
 
     // fallback error
