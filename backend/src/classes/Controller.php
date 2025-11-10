@@ -43,23 +43,12 @@ class Controller
     try {
       $image = new Image();
     } catch (Exception $error) {
-      switch ($error) {
-        case ($error instanceof FileNotFoundException): {
-            Response::error(400, "file not found in \$_FILES['image'] field");
-            break;
-          }
-        case ($error instanceof FileUploadException): {
-            Response::error(400, "upload error: $image->error");
-            break;
-          }
-        case ($error instanceof FileUploadException): {
-            Response::error(406, "file type not allowed");
-            break;
-          }
-        default:
-          Response::error(500, "unexpected error occurred while opening \$_FILES['image']");
-          break;
-      }
+      match ($error) {
+        'FileNotFoundException' => Response::error(400, "file not found in \$_FILES['image'] field"),
+        'FileUploadException' => Response::error(400, "upload error: $image->error"),
+        'FileUploadException' => Response::error(406, "file type not allowed"),
+        default => Response::error(500, "unexpected error occurred while opening \$_FILES['image']")
+      };
     }
     // присвоение имени по содержимому изображения
     $image->name = FileManager::hash($image->tmp);
