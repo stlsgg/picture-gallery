@@ -9,6 +9,7 @@ class Image
   public string $error;
   public string $tmp;
   public int $size;
+  public string $fext;
 
   public string $mimetype;
 
@@ -21,6 +22,7 @@ class Image
   public function __construct()
   {
     $finfo = finfo_open(FILEINFO_MIME_TYPE);
+    $fext = finfo_open(FILEINFO_EXTENSION);
     $file = $_FILES['image'];
     $this->tmp = $file['tmp_name'];
 
@@ -48,5 +50,6 @@ class Image
     // read info about file
     $this->name = $file['name'];
     $this->size = $file['size'];
+    $this->fext = finfo_file($fext, $this->tmp);
   }
 }
