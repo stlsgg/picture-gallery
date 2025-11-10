@@ -52,9 +52,13 @@ class Controller
     }
     // присвоение имени по содержимому изображения
     $image->name = FileManager::hash($image->tmp);
+    $imageName = "$image->name.$image->fext";
+    $rootPath = "/var/www/backend/public";
+    $fullPath = "/upload/full/$imageName";
+    $thumbPath = "/upload/thumbnails/thumb__$imageName";
 
     // проверка на дубликат на сервере
-    if (file_exists("/var/www/backend/public/upload/full/" . $image->name)) {
+    if (file_exists($fullPath)) {
       Response::error(409, "file already exists");
     }
 
@@ -66,10 +70,6 @@ class Controller
     $imageWorker->putWatermark();
 
     // добавление информации в meta.json (добавление объекта)
-    $imageName = "$image->name.$image->fext";
-    $rootPath = "/var/www/backend/public";
-    $fullPath = "/upload/full/$imageName";
-    $thumbPath = "/upload/thumbnails/thumb__$imageName";
     $imageObject = [
       "desc" => $_POST["desc"] ?? "no description",
       "full" => $fullPath,
