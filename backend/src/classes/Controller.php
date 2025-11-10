@@ -71,7 +71,7 @@ class Controller
 
     // добавление информации в meta.json (добавление объекта)
     $imageObject = [
-      "desc" => $_POST["desc"] ?? "no description",
+      "desc" => Request::$data['desc'] ?? "no description",
       "full" => $fullPath,
       "thumb" => $thumbPath
     ];
