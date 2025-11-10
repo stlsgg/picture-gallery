@@ -42,17 +42,10 @@ class FileManager
    */
   public static function hash(string $filename): string|bool
   {
-    $hash = hash_init("sha256");
-    $handle = fopen($filename, "rb");
-    if ($handle === false) {
-      return false;
-    }
-    $chunkSize = 8192; // 8 KB
-    while (!feof($handle)) {
-      $chunk = fread($handle, $chunkSize);
-      hash_update($hash, $chunk);
-    }
-    fclose($handle);
-    return substr(hash_final($hash), 0, 10);
+    if (!is_readable($filename)) return false;
+
+    $full = hash_file("sha256", $filename);
+    if ($full === false) return false;
+    return substr($full, 0, 10);
   }
 }
