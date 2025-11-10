@@ -34,4 +34,25 @@ class FileManager
   {
     return touch($filename);
   }
+
+  /**
+   * Generate string with len 10 safe for file naming
+   * @param string $filename full path to file
+   * @return string|bool $generatedString generated string or false on failure
+   */
+  public static function hash(string $filename): string|bool
+  {
+    $hash = hash_init("sha256");
+    $handle = fopen($filename, "rb");
+    if ($handle === false) {
+      return false;
+    }
+    $chunkSize = 8192; // 8 KB
+    while (!feof($handle)) {
+      $chunk = fread($handle, $chunkSize);
+      hash_update($hash, $chunk);
+    }
+    fclose($handle);
+    return substr(hash_final($hash), 0, 10);
+  }
 }
