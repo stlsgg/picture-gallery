@@ -15,3 +15,6 @@ node_modules
 
 # backup files
 *.bak
+
+# upload directory
+upload
