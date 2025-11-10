@@ -119,21 +119,21 @@ class Controller
     $method = $this->request->getMethod();
     if ($method === "POST") {
       $this->postImage();
-      Response::ok(["message" => "image uploaded"]);
+      Response::ok(201, ["message" => "image created"]);
     } else if ($method === "GET") {
       if ($this->request->check()) {
-        Response::ok("check success");
+        Response::ok(200, "check success");
       }
 
       if ($this->request->isCollection()) {
-        Response::ok($this->db->readAll());
+        Response::ok(200, $this->db->readAll());
       }
 
       if ($this->request->isSingle()) {
         $id = $this->request->getId();
         $obj = $this->db->readById($id);
         if (!$obj) Response::error(404, "object with id $id not found");
-        Response::ok($obj);
+        Response::ok(200, $obj);
       }
 
       if ($this->request->isField()) {
@@ -142,16 +142,16 @@ class Controller
         $obj = $this->db->readById($id);
         if (!$obj) Response::error(404, "object with id $id not found");
         if (!array_key_exists($field, $obj)) Response::error(404, "field $field not found");
-        Response::ok($obj[$field]);
+        Response::ok(200, $obj[$field]);
       }
     } else if ($method === "DELETE") {
       if (!$this->request->isSingle()) {
-        Response::error(400, "request must be with single image id only");
+        Response::error(406, "request must be with single image id only");
       }
       if ($this->db->delete($this->request->getId())) {
-        Response::ok("image successfully deleted");
+        Response::ok(204);
       }
-      Response::error(500, "unexpected error while deleting image")
+      Response::error(400, "unexpected error while deleting image")
     }
 
     // fallback error
