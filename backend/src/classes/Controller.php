@@ -149,7 +149,4 @@ class Controller
     // fallback error
     Response::error(503, "unsupported error");
   }
-
-  // callback на получение данных с сервера
-  public function getImage(): void {}
 }
