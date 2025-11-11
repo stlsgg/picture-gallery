@@ -7,8 +7,8 @@ class Request
 
   public function __construct()
   {
-    $this->uri = rtrim($_SERVER["REQUEST_URI"], "/");
-    $this->method = $_SERVER['REQUEST_METHOD'];
-    $this->data = $_POST;
+    self::$uri = rtrim($_SERVER["REQUEST_URI"], "/");
+    self::$method = $_SERVER["REQUEST_METHOD"];
+    self::$data = $_POST;
   }
 }
