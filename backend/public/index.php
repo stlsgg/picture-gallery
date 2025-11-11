@@ -20,7 +20,10 @@ $router->on("get", "/check", function () {
 });
 
 $router->on("get", "/images/{id:int}", function ($id) use ($db) {
-  Response::ok(200, $db->readById($id));
+  if  ($db->readById($id)) {
+    Response::ok(200, $db->readById($id));
+  }
+  Response::error(404, "not found");
 });
 
 /* $router->on("delete", "/images/{id:int}", function ($id) use ($db) { */
