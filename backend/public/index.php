@@ -30,10 +30,6 @@ $router->on("get", "/images/{id:int}", function ($id) use ($db) {
   Response::error(404, "not found");
 });
 
-/* $router->on("delete", "/images/{id:int}", function ($id) use ($db) { */
-/*   $db->delete($id); */
-/*   Response::ok(204); */
-/* }); */
 $router->on("post", "/images", function () use ($db) {
   $uploadFullPath = "/var/www/backend/public/upload/full";
   $uploadThumbPath = "/var/www/backend/public/upload/thumbnails";
