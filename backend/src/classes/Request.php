@@ -1,14 +1,15 @@
 <?php
 class Request
 {
-  public static string $uri = "";
-  public static string $method = "";
-  public static array $data = [];
+  public static function uri() {
+    return rtrim($_SERVER["REQUEST_URI"], "/");
+  }
 
-  public function __construct()
-  {
-    self::$uri = rtrim($_SERVER["REQUEST_URI"], "/");
-    self::$method = $_SERVER["REQUEST_METHOD"];
-    self::$data = $_POST;
+  public static function method() {
+    return $_SERVER["REQUEST_METHOD"];
+  }
+
+  public static function data() {
+    return $_POST;
   }
 }

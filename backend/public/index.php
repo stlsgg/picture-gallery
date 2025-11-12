@@ -35,7 +35,6 @@ $router->on("get", "/images/{id:int}", function ($id) use ($db) {
 /*   Response::ok(204); */
 /* }); */
 $router->on("post", "/images", function () use ($db) {
-  $request = new Request();
   $uploadFullPath = "/var/www/backend/public/upload/full";
   $uploadThumbPath = "/var/www/backend/public/upload/thumbnails";
 
@@ -65,7 +64,7 @@ $router->on("post", "/images", function () use ($db) {
 
   // добавление информации в meta.json (добавление объекта)
   $imageObject = [
-    "desc" => $request::$data['desc'] ?? "no description",
+    "desc" => Request::data()['desc'] ?? "no description",
     /* "desc" => $_POST["desc"] ?? "no description", */
     "full" => "/upload/full/$image->name",
     "thumb" => "/upload/thumbnails/thumb__$image->name"
