@@ -68,6 +68,25 @@ class FileManager
   }
 
   /**
+   * Перемещение файла по переданному пути.
+   *
+   * Метод состоит из методов copy & delete класса FileManager.
+   *
+   * @param string $srcPath путь (относительный или абсолютный) исходного файла.
+   * @param string $dstPath путь (относительный или абсолютный) до файла
+   * назначения.
+   * @return ?bool $result результат выполнения, true при успехе;
+   * В случае ошибки выбрасывается ошибка, сообщающая о провале операции на
+   * определенном этапе.
+   */
+  public static function move(string $srcPath, string $dstPath): ?bool
+  {
+    FileManager::copy($srcPath, $dstPath);
+    FileManager::delete($srcPath);
+    return true;
+  }
+
+  /**
    * Сохранение картинки по заданному пути.
    *
    * @param GdImage $image изображение класса GdImage. Если директории не
