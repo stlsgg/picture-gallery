@@ -3,8 +3,8 @@
 $rootPath = "/var/www/backend";
 $public = $_SERVER["DOCUMENT_ROOT"];
 $dbPath = "$rootPath/src/data/meta.json";
-$fullPath = "/upload/full/";
-$thumbPath = "/upload/thumbnails/";
+$fullPath = "/upload/full";
+$thumbPath = "/upload/thumbnails";
 $classDir = "$rootPath/src/classes";
 
 // подключение классов
@@ -30,9 +30,9 @@ $router->on("get", "/images/{id:int}", function ($id) use ($db) {
   Response::error(404, "not found");
 });
 
-$router->on("post", "/images", function () use ($db) {
-  $uploadFullPath = "/var/www/backend/public/upload/full";
-  $uploadThumbPath = "/var/www/backend/public/upload/thumbnails";
+$router->on("post", "/images", function () use ($db, $rootPath, $fullPath, $thumbPath) {
+  $uploadFullPath = "$rootPath/public/$fullPath";
+  $uploadThumbPath = "$rootPath/public/$thumbPath";
 
   try {
     $image = new Image();
@@ -61,9 +61,9 @@ $router->on("post", "/images", function () use ($db) {
   // добавление информации в meta.json (добавление объекта)
   $imageObject = [
     "desc" => Request::data()['desc'] ?? "no description",
-    /* "desc" => $_POST["desc"] ?? "no description", */
-    "full" => "/upload/full/$image->name",
-    "thumb" => "/upload/thumbnails/thumb__$image->name"
+     /* "desc" => $_POST["desc"] ?? "no description", */ //
+    "full" => "$fullPath/$image->name",
+    "thumb" => "$thumbPath/thumb__$image->name"
   ];
 
   $db->create($imageObject);
