@@ -65,7 +65,10 @@ class FileManager
    */
   public static function touch(string $filename): ?bool
   {
-    return touch($filename);
+    if (!touch($filename)) {
+      throw new Exception("Failed to create file at specified location: $filename");
+    }
+    return true;
   }
 
   /**
