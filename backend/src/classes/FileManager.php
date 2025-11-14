@@ -24,6 +24,9 @@ class FileManager
     string $mime
   ): bool {
     $save = self::HANDLERS[$mime];
+    if (!file_exists($path)) {
+      FileManager::mkdir(dirname($path));
+    }
     $save($image, $path);
     return true;
   }
