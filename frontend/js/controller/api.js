@@ -8,7 +8,7 @@
  */
 export async function checkAPI(APIUrl = "http://api.gg.ru") {
   try {
-    const api = await fetch(`${APIUrl}/api/check`);
+    const api = await fetch(`${APIUrl}/check`);
     if (!api.ok) {
       console.error(`http error while testing api connection: ${api.status}`);
       console.log(`abort getImages.`);
@@ -56,7 +56,7 @@ export async function fetchDB(url) {
     return false;
   }
   try {
-    return await fetch(`${url}/api/images`)
+    return await fetch(`${url}/images`)
       .then((response) => {
         if (!response.ok)
           throw new Error(
