@@ -111,7 +111,34 @@ class FileManager
   }
 
   /**
-   * Создание файла по заданному пути.
+   * Сохранение переданных данных по заданному пути.
+   *
+   * LOCK_EX в теории должен защищать от гонок записи/чтения.
+   *
+   * @param string $path - путь до файла, куда будет сохранятся база данных.
+   * В случае отсутствия директории, директория будет создана.
+   * @param array $data - массив записываемых данных.
+   * @return ?bool $result результат выполнения: true при успехе, иначе выброс
+   * ошибки.
+   */
+  public static function saveDataBase(
+    string $path,
+    array $data
+  ): ?bool {
+    $directory = dirname($path);
+    if (!file_exists($directory)) {
+      FileManager::mkdir($directory);
+    }
+    $jsonData = json_encode($data);
+    if(json_last_error_msg() !== JSON_ERROR_NONE) {
+      throw new Exception("Failed to encode data to JSON format. Data: $data");
+    }
+    if (!file_put_contents($path, $jsonData, LOCK_EX)) {
+      throw new Exception("Failed to write data to DataBase. Path: $path\nData: $data");
+    };
+    return true;
+  }
+
   /**
    * Создание пустого файла по переданному пути.
    *
