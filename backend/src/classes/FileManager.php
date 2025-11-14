@@ -1,7 +1,10 @@
 <?php
-// класс по управлению физическими данными:
-// создание, удаление файлов и директорий
-// перенос данных из одного места в другое (для tmp картинки самое оно)
+
+/**
+ * Класс по управлению физическими данными сервера.
+ *
+ * Создание директорий, физического файла базы данных.
+ */
 class FileManager
 {
   private const HANDLERS = [
@@ -10,14 +13,31 @@ class FileManager
     "image/webp" => "imagewebp",
   ];
 
-  // создание директории
-  // обертка над обычным mkdir
+  /**
+   * Рекурсивное создание директории.
+   *
+   * Обертка над обычной функцией mkdir.
+   *
+   * @param string $path путь (относительный или абсолютный) до директории.
+   * @return bool $result результат выполнения команды mkdir, true при успехе,
+   * иначе false.
+   */
   public static function mkdir(string $path): bool
   {
     return mkdir($path, 0644, recursive: true);
   }
 
-  // сохранение картинки по заданному пути
+  /**
+   * Сохранение картинки по заданному пути.
+   *
+   * @param GdImage $image изображение класса GdImage. Если директории не
+   * существует, метод создаст необходимые директории для сохранения файла.
+   * @param string $path путь, по которому будет сохранена картинка.
+   * @param string $mime mimetype сохраняемого файла. Параметр необходим для
+   * выбора функции из библиотеки gd, в зависимости от mime.
+   * @return bool $result результат выполнения команды - true при успехе, иначе
+   * false.
+   */
   public static function saveImage(
     GdImage $image,
     string $path,
@@ -31,17 +51,29 @@ class FileManager
     return true;
   }
 
-  // создание файла
-  // обертка над touch
+  /**
+   * Создание файла по заданному пути.
+   *
+   * Обертка над обычной функцией touch.
+   *
+   * @param string $filename полный путь до файла, включая сам файл и его суффикс.
+   * @return bool $result результат выполнения команды touch - true при успехе,
+   * иначе false.
+   */
   public static function touch(string $filename): bool
   {
     return touch($filename);
   }
 
   /**
-   * Generate string with len 10 safe for file naming
-   * @param string $filename full path to file
-   * @return string|bool $generatedString generated string or false on failure
+   * Генерация строки длиной 10 символов.
+   *
+   * Генерируется строка, содержащие символы латинского алфавита и цифры от 0 до
+   * 9, на основе содержимого передаваемого файла.
+   *
+   * @param string $filename путь до файла, по которому генерируется строка.
+   * @return string|bool $generatedString сгенерированная строка при успехе
+   * операции, иначе false.
    */
   public static function hash(string $filename): string|bool
   {
