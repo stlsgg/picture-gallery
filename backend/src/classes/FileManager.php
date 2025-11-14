@@ -32,6 +32,23 @@ class FileManager
   }
 
   /**
+   * Удаление файла по переданному пути.
+   *
+   * Обертка над обычной функцией unlink.
+   *
+   * @param string $path путь (относительный или абсолютный) до файла.
+   * @return ?bool $result результат выполнения команды unlink, true при успехе;
+   * В случае ошибки выбрасывается ошибка, сообщающая о провале операции.
+   */
+  public static function delete(string $path): ?bool
+  {
+    if (!unlink($path)) {
+      throw new Exception("Failed delete file: $path");
+    }
+    return true;
+  }
+
+  /**
    * Сохранение картинки по заданному пути.
    *
    * @param GdImage $image изображение класса GdImage. Если директории не
