@@ -20,12 +20,15 @@ class FileManager
    * Обертка над обычной функцией mkdir.
    *
    * @param string $path путь (относительный или абсолютный) до директории.
-   * @return bool $result результат выполнения команды mkdir, true при успехе,
-   * иначе false.
+   * @return ?bool $result результат выполнения команды mkdir, true при успехе;
+   * В случае ошибки выбрасывается ошибка, сообщающая о провале операции.
    */
-  public static function mkdir(string $path): bool
+  public static function mkdir(string $path): ?bool
   {
-    return mkdir($path, 0644, recursive: true);
+    if (!mkdir($path, 0644, recursive: true)) {
+      throw new Exception("Failed to create a directory by given path: $path");
+    }
+    return true;
   }
 
   /**
