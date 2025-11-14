@@ -49,6 +49,25 @@ class FileManager
   }
 
   /**
+   * Копирование файла по переданному пути.
+   *
+   * Обертка над обычной функцией copy.
+   *
+   * @param string $srcPath путь (относительный или абсолютный) исходного файла.
+   * @param string $dstPath путь (относительный или абсолютный) до файла
+   * назначения.
+   * @return ?bool $result результат выполнения команды copy, true при успехе;
+   * В случае ошибки выбрасывается ошибка, сообщающая о провале операции.
+   */
+  public static function copy(string $srcPath, string $dstPath): ?bool
+  {
+    if (!copy($srcPath, $dstPath)) {
+      throw new Exception("Failed copy file: $srcPath to location $dstPath");
+    }
+    return true;
+  }
+
+  /**
    * Сохранение картинки по заданному пути.
    *
    * @param GdImage $image изображение класса GdImage. Если директории не
