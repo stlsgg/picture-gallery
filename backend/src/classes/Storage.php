@@ -85,6 +85,7 @@ class Storage
   }
 
   // save to disk
+  // WARN метод по зоне ответственности принадлежит FileManager.
   public function save(): bool
   {
     $json = json_encode($this->db);
