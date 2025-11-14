@@ -14,7 +14,7 @@ class FileManager
   // обертка над обычным mkdir
   public static function mkdir(string $path): bool
   {
-    return mkdir($path, 0755, recursive: true);
+    return mkdir($path, 0644, recursive: true);
   }
 
   // сохранение картинки по заданному пути
