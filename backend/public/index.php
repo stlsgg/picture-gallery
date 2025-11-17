@@ -31,8 +31,8 @@ $router->on("get", "/images/{id:int}", function ($id) use ($db) {
 });
 
 $router->on("post", "/images", function () use ($db, $rootPath, $fullPath, $thumbPath) {
-  $uploadFullPath = "$rootPath/public/$fullPath";
-  $uploadThumbPath = "$rootPath/public/$thumbPath";
+  $uploadFullPath = "$rootPath/public$fullPath";
+  $uploadThumbPath = "$rootPath/public$thumbPath";
 
   try {
     $image = new Image();
