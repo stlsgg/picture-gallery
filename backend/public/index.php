@@ -34,6 +34,14 @@ $router->on("post", "/images", function () use ($db, $rootPath, $fullPath, $thum
   $uploadFullPath = "$rootPath/public$fullPath";
   $uploadThumbPath = "$rootPath/public$thumbPath";
 
+  // create dirs if not existing
+  if (!file_exists($uploadFullPath)) {
+    FileManager::mkdir($uploadFullPath);
+  }
+  if (!file_exists($uploadThumbPath)) {
+    FileManager::mkdir($uploadThumbPath);
+  }
+
   try {
     $image = new Image();
   } catch (Exception $error) {
