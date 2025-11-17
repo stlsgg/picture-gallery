@@ -7,7 +7,7 @@ node_modules
 *.jpeg
 
 # information about pictures
-*.json
+meta.json
 
 # dev: ignore css
 *.css
