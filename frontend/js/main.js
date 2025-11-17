@@ -28,39 +28,47 @@ async function loadPage(pageNum, itemsOnPage = 10) {
   if (!checkAPI(API_URL)) console.error("api not working!");
   const images = await fetchImages(firstEl, lastEl, API_URL);
 
-  images.forEach((image, idx) => {
-    // загружаю на страницу
-    const card = document.createElement("div");
-    card.innerHTML = createCard(image?.thumb, image?.desc || "без описания!");
-
-    card.addEventListener("click", () => {
-      const modalFullImageElem = document.getElementById(
-        "modal-full-image-window",
-      );
-
-      const loading = document.createElement("div");
-      loading.className = "loading loading-lg";
-      const modalFullImage = modalFullImageElem.querySelector("img");
-      modalFullImage.replaceWith(loading);
-
-      const newImage = document.createElement("img");
-      newImage.className = "img-responsive";
-      const desc = modalFullImageElem.querySelector(".description");
-      newImage.src = `${API_URL}/${images[idx]?.full}`;
-      newImage.alt = images[idx]?.desc || "нет описания, пипяу ;D";
-      desc.textContent = images[idx]?.desc || "нет описания, пипяу ;D";
-
-      loading.replaceWith(newImage);
-      window.location.href = "#modal-full-image-window";
-    });
-
+  // если картинок нет, вывод на страницу сообщения, что картинок нет
+  if (!images.length) {
     renderState(DE["gallery"], {
-      className: "gallery",
+      innerText: "Пока здесь нет изображений. Загрузите первое!"
     });
+  } else {
+    images.forEach((image, idx) => {
+      // загружаю на страницу
+      const card = document.createElement("div");
+      card.innerHTML = createCard(image?.thumb, image?.desc || "без описания!");
 
-    DE["gallery"].appendChild(card);
-  });
-  DE["gallery"].removeChild(document.getElementById("loading-state"));
+      card.addEventListener("click", () => {
+        const modalFullImageElem = document.getElementById(
+          "modal-full-image-window",
+        );
+
+        const loading = document.createElement("div");
+        loading.className = "loading loading-lg";
+        const modalFullImage = modalFullImageElem.querySelector("img");
+        modalFullImage.replaceWith(loading);
+
+        const newImage = document.createElement("img");
+        newImage.className = "img-responsive";
+        const desc = modalFullImageElem.querySelector(".description");
+        newImage.src = `${API_URL}/${images[idx]?.full}`;
+        newImage.alt = images[idx]?.desc || "нет описания, пипяу ;D";
+        desc.textContent = images[idx]?.desc || "нет описания, пипяу ;D";
+
+        loading.replaceWith(newImage);
+        window.location.href = "#modal-full-image-window";
+      });
+
+      renderState(DE["gallery"], {
+        className: "gallery",
+      });
+
+      DE["gallery"].appendChild(card);
+    });
+    DE["gallery"].removeChild(document.getElementById("loading-state"));
+  }
+
 }
 
 function createCard(src, desc) {
