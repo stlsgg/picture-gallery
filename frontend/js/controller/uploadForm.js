@@ -50,10 +50,22 @@ export function form() {
 
     const result = await response.json();
     if (result?.status === "ok") {
-      toastElem.querySelector("h6").innerText = "Успешно!";
+      toastElem.querySelector("h6").innerText = "Успешно.";
       toastElem.querySelector("p").innerText =
         "Картинка была загружена на сервер.";
       renderState(toastElem, { className: "toast toast-success toast-active" });
+      toastElem
+        .querySelector("i.icon.icon-cross")
+        .addEventListener("click", () => {
+          toastElem.querySelector("h6").innerText = "";
+          toastElem.querySelector("p").innerText = "";
+          renderState(toastElem, { className: "toast" });
+        });
+    } else {
+      toastElem.querySelector("h6").innerText = "Ошибка.";
+      toastElem.querySelector("p").innerText =
+        "Не удалось загрузить картинку на сервер.";
+      renderState(toastElem, { className: "toast toast-error toast-active" });
       toastElem
         .querySelector("i.icon.icon-cross")
         .addEventListener("click", () => {
