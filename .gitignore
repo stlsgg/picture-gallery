@@ -5,6 +5,8 @@ node_modules
 *.jpg
 *.webp
 *.jpeg
+# except watermark
+!watermark.png
 
 # information about pictures
 meta.json
