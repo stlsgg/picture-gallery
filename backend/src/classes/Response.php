@@ -15,10 +15,8 @@ class Response
   public static function ok(int $code, array|string|null $data = null)
   {
     http_response_code($code);
-    if ($data) {
-      header("Content-Type: application/json");
-      echo json_encode(["status" => "ok", "data" => $data]);
-    }
+    header("Content-Type: application/json");
+    echo json_encode(["status" => "ok", "data" => $data]);
     exit;
   }
 
