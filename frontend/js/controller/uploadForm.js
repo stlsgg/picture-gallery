@@ -1,7 +1,7 @@
 // Модуль, отвечающий за события формы загрузки файла
 // TODO сделать переиспользуемые функции
 
-import { initDragAndDrop, showPreview } from "./dragAndDrop.js";
+import { initDragAndDrop, showPreview, clearPreview } from "./dragAndDrop.js";
 import { renderState } from "../view/renderState.js";
 
 export function form() {
@@ -78,5 +78,6 @@ export function form() {
     label.innerText = "Перетащите сюда картинку :3";
     console.log(result);
     window.location.href = "#close";
+    clearPreview(dropZone);
   });
 }
