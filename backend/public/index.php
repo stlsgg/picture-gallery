@@ -24,7 +24,7 @@ $router->on("get", "/check", function () {
 });
 
 $router->on("get", "/images/{id:int}", function ($id) use ($db) {
-  if  ($db->readById($id)) {
+  if ($db->readById($id)) {
     Response::ok(200, $db->readById($id));
   }
   Response::error(404, "not found");
@@ -53,7 +53,7 @@ $router->on("post", "/images", function () use ($db, $rootPath, $fullPath, $thum
     };
   }
 
-  $image->name = FileManager::hash($image->tmp) .".$image->fext";
+  $image->name = FileManager::hash($image->tmp) . ".$image->fext";
   // проверка на дубликат на сервере
   if (file_exists("$uploadFullPath/$image->name")) {
     Response::error(409, "file already exists");
@@ -69,7 +69,7 @@ $router->on("post", "/images", function () use ($db, $rootPath, $fullPath, $thum
   // добавление информации в meta.json (добавление объекта)
   $imageObject = [
     "desc" => Request::data()['desc'] ?? "no description",
-     /* "desc" => $_POST["desc"] ?? "no description", */ //
+    /* "desc" => $_POST["desc"] ?? "no description", */ //
     "full" => "$fullPath/$image->name",
     "thumb" => "$thumbPath/thumb__$image->name"
   ];
