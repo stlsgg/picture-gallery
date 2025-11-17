@@ -17,6 +17,13 @@ require_once "$classDir/ImageHandler.php";
 require_once "$classDir/FileManager.php";
 
 $router = new Router();
+// create db file and directories if not exist
+if (!file_exists(dirname($dbPath))) {
+  FileManager::mkdir(dirname($dbPath));
+}
+if (!file_exists($dbPath)) {
+  file_put_contents($dbPath, "{}\n");
+}
 $db = new Storage($dbPath);
 
 $router->on("get", "/check", function () {
