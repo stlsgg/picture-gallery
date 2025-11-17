@@ -87,13 +87,17 @@ export function initDragAndDrop(dropZone, fileInput, label) {
 }
 
 export function showPreview(file, dropZone) {
-  dropZone.querySelectorAll("img").forEach((child) => {
-    dropZone.removeChild(child);
-  });
+  clearPreview(dropZone);
   const imgPreview = document.createElement("img");
   imgPreview.className = "preview";
   const url = URL.createObjectURL(file);
   imgPreview.src = url;
   imgPreview.onload = () => URL.revokeObjectURL(url);
   dropZone.appendChild(imgPreview);
+}
+
+export function clearPreview(dropZone) {
+  dropZone.querySelectorAll("img").forEach((child) => {
+    dropZone.removeChild(child);
+  });
 }
